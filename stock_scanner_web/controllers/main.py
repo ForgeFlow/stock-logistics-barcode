@@ -33,10 +33,13 @@ class ScannerWeb(http.Controller):
                      scenario_step=False,
                      type='http',
                      auth='public',
-                     website=True):
+                     website=True,
+                     **kwargs):
         values = {}  # Reset the values.
         if message == 'False':
             message = False
+        if not message and kwargs:
+            message = kwargs
         # Determine the correct hardware:
         scanner_hardware = False
         user = request.env.user
@@ -85,7 +88,6 @@ class ScannerWeb(http.Controller):
             return http.request.render(
                 'stock_scanner_web.hardware_select',
                 values)
-
         if not message and action == 'reset':
             scanner_hardware.empty_scanner_values()
         try:
@@ -124,8 +126,7 @@ class ScannerWeb(http.Controller):
             'value': value,
             'scenario': scenario,
             'step': int(scenario_step),
-            'terminal_number': terminal_number,
-            'number_method': scanner_hardware.number_method
+            'terminal_number': terminal_number
         }
         if not message and action == 'reset':
             values['action'] = 'reset'

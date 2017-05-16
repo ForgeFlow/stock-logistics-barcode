@@ -212,11 +212,9 @@
                                                class="search-query form-control"
                                                autofocus="autofocus"/>
                             </form>
-                            <p t-if="number_method == u'numpad'">
-                                <button id="numpadButton-btn"
-                                        class="ui-btn ui-icon-grid ui-alt-icon ui-nodisc-icon ui-btn-icon-left">Add manually
-                                </button>
-                            </p>
+                            <button id="numpadButton-btn"
+                                    class="ui-btn ui-icon-grid ui-alt-icon ui-nodisc-icon ui-btn-icon-left">Add manually
+                            </button>
                             <button class="ui-btn ui-icon-carat-r ui-alt-icon ui-btn-icon-left ui-nodisc-icon"
                                     form="my_form">Submit
                             </button>
@@ -259,6 +257,9 @@
                                t-attf-href="/stock_scanner_web/{{terminal_number}}/{{step}}/back" class="ui-btn">
                                 Go to menu
                             </a>
+                        </p>
+                        <p t-if="code == 'W'">
+                            <t t-call="{{result}}"/>
                         </p>
                         <p t-if="action is not 'reset'">
                             <a id="btn-home"
