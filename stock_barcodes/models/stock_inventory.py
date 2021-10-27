@@ -11,14 +11,23 @@ class StockInventory(models.Model):
         self.start_empty = True
         self._action_start()
         self._check_company()
+        option_group = self.env.ref(
+            "stock_barcodes.stock_barcodes_option_group_inventory"
+        )
+        vals = {
+            "inventory_id": self.id,
+            "res_model_id": self.env.ref("stock.model_stock_inventory").id,
+            "res_id": self.id,
+            "product_id": self.product_ids[:1].id,
+            "option_group_id": self.env.ref(
+                "stock_barcodes.stock_barcodes_option_group_inventory"
+            ).id,
+        }
+        if option_group.get_option_value("location_id", "filled_default"):
+            vals["location_id"] = self.location_ids[:1].id
+        wiz = self.env["wiz.stock.barcodes.read.inventory"].create(vals)
         action = self.env.ref(
             "stock_barcodes.action_stock_barcodes_read_inventory"
         ).read()[0]
-        action["context"] = {
-            "default_location_id": self.location_ids[:1].id,
-            "default_product_id": self.product_ids[:1].id,
-            "default_inventory_id": self.id,
-            "default_res_model_id": self.env.ref("stock.model_stock_inventory").id,
-            "default_res_id": self.id,
-        }
+        action["res_id"] = wiz.id
         return action

@@ -62,11 +62,18 @@ class WizStockBarcodesReadInventory(models.TransientModel):
             line = StockInventoryLine.create(self._prepare_inventory_line())
         self.inventory_product_qty = line.product_qty
 
-    def check_done_conditions(self):
-        if self.product_id.tracking != "none" and not self.lot_id and not self.auto_lot:
-            self._set_messagge_info("info", _("Waiting for input lot"))
-            return False
-        return super().check_done_conditions()
+    def check_lot_contidion(self):
+        """ Change valuation condition depends if auto_lot is setted
+        """
+        res = super().check_lot_contidion()
+        if not res:
+            if (
+                self.product_id.tracking != "none"
+                and not self.lot_id
+                and not self.auto_lot
+            ):
+                return res
+        return True
 
     def action_done(self):
         result = super().action_done()
@@ -83,8 +90,8 @@ class WizStockBarcodesReadInventory(models.TransientModel):
             self.action_done()
         return result
 
-    def reset_qty(self):
-        super().reset_qty()
+    def action_clean_values(self):
+        super().action_clean_values()
         self.inventory_product_qty = 0.0
 
     def action_undo_last_scan(self):
@@ -145,7 +152,8 @@ class WizStockBarcodesReadInventory(models.TransientModel):
 
     @api.onchange("product_id")
     def _onchange_product_id(self):
-        self.lot_id = False
+        if self.product_id != self.lot_id.product_id:
+            self.lot_id = False
         self.auto_lot = self._default_auto_lot()
 
     @api.onchange("lot_id")
