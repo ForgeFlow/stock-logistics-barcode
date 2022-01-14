@@ -33,6 +33,10 @@ odoo.define("stock_barcodes.FieldFloatNumericMode", function (require) {
         */
         _onClick: function (event) {
             this._super(event);
+            if (this.el == undefined) {
+                alert("stock-logistic-barcode");
+            } else {
+            }
             $(this.el).find("input").blur();
         },
     });
