@@ -673,7 +673,7 @@ class WizCandidatePicking(models.TransientModel):
         picking_id = self.env.context["picking_id"]
         wiz.picking_id = picking_id
         wiz._set_candidate_pickings(wiz.picking_id)
-        return wiz.action_done()
+        return wiz.action_confirm()
 
     def action_unlock_picking(self):
         wiz = self._get_wizard_barcode_read()
