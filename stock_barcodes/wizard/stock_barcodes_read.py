@@ -11,10 +11,6 @@ class WizStockBarcodesRead(models.AbstractModel):
     _transient_max_hours = 48
     _allowed_product_types = ["product", "consu"]
 
-    @api.model
-    def _default_auto_lot(self):
-        return self.env.company.stock_barcodes_auto_lot
-
     barcode = fields.Char()
     res_model_id = fields.Many2one(comodel_name="ir.model", index=True)
     res_id = fields.Integer(index=True)
@@ -74,7 +70,7 @@ class WizStockBarcodesRead(models.AbstractModel):
         string="Get lots automatically",
         help="If checked the lot will be set automatically with the same "
         "removal startegy",
-        default=_default_auto_lot,
+        compute="_compute_is_manual_qty",
     )
 
     @api.depends("res_id")
@@ -87,6 +83,7 @@ class WizStockBarcodesRead(models.AbstractModel):
         for rec in self:
             rec.is_manual_qty = rec.option_group_id.is_manual_qty
             rec.is_manual_confirm = rec.option_group_id.is_manual_confirm
+            rec.auto_lot = rec.option_group_id.auto_lot
 
     @api.depends("location_id", "product_id", "lot_id")
     def _compute_qty_available(self):

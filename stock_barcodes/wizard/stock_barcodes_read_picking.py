@@ -567,6 +567,7 @@ class WizStockBarcodesReadPicking(models.TransientModel):
         quants = first(
             self.env["stock.quant"]._gather(self.product_id, self.location_id)
         )
+        # TODO: Perhaps update location_id from quant??
         self.lot_id = quants.lot_id
 
     def action_product_scaned_post(self, product):

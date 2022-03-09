@@ -34,6 +34,7 @@
                             <field name="is_manual_qty" />
                             <field name="allow_negative_quant" />
                             <field name="fill_fields_from_lot" />
+                            <field name="auto_lot" />
                         </group>
                     </group>
                     <field name="option_ids">

@@ -61,6 +61,11 @@ class StockBarcodesOptionGroup(models.Model):
         "The object variable is used to refer to the source record\n"
         "For example, object.location_id,object.product_id,object.lot_id"
     )
+    auto_lot = fields.Boolean(
+        string="Get lots automatically",
+        help="If checked the lot will be set automatically with the same "
+        "removal startegy",
+    )
 
     def get_option_value(self, field_name, attribute):
         option = self.option_ids.filtered(lambda op: op.field_name == field_name)[:1]

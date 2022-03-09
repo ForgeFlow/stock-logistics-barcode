@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-14 21:57+0000\n"
-"PO-Revision-Date: 2021-11-14 23:01+0100\n"
+"POT-Creation-Date: 2022-03-09 21:12+0000\n"
+"PO-Revision-Date: 2022-03-09 22:15+0100\n"
 "Last-Translator: Sergio Teruel <sergio.teruel@tecnativa.com>\n"
 "Language-Team: \n"
 "Language: es\n"
@@ -123,7 +123,6 @@ msgid "Are you sure to validate the picking ?"
 msgstr "¿Seguro que quiere validar este albarán?"
 
 #. module: stock_barcodes
-#: model:ir.model.fields,field_description:stock_barcodes.field_wiz_stock_barcodes_read_inventory__auto_lot
 #: model_terms:ir.ui.view,arch_db:stock_barcodes.view_stock_barcodes_read_inventory_form
 msgid "Auto lot"
 msgstr "Auto lote"
@@ -298,11 +297,6 @@ msgid "Companies"
 msgstr "Compañías"
 
 #. module: stock_barcodes
-#: model:ir.model,name:stock_barcodes.model_res_config_settings
-msgid "Config Settings"
-msgstr "Opciones de configuración"
-
-#. module: stock_barcodes
 #: model_terms:ir.ui.view,arch_db:stock_barcodes.view_stock_barcodes_new_lot
 msgid "Confirm"
 msgstr "Confirmar"
@@ -466,9 +460,13 @@ msgid "Forced"
 msgstr "Forzado"
 
 #. module: stock_barcodes
-#: model:ir.model.fields,field_description:stock_barcodes.field_res_config_settings__stock_barcodes_inventory_auto_lot
-msgid "Get lots automatically for inventories"
-msgstr "Obtener lotes automáticamente para inventarios"
+#: model:ir.model.fields,field_description:stock_barcodes.field_res_config_settings__stock_barcodes_auto_lot
+#: model:ir.model.fields,field_description:stock_barcodes.field_stock_barcodes_option_group__auto_lot
+#: model:ir.model.fields,field_description:stock_barcodes.field_wiz_stock_barcodes_read__auto_lot
+#: model:ir.model.fields,field_description:stock_barcodes.field_wiz_stock_barcodes_read_inventory__auto_lot
+#: model:ir.model.fields,field_description:stock_barcodes.field_wiz_stock_barcodes_read_picking__auto_lot
+msgid "Get lots automatically"
+msgstr "Obtener lotes automáticamente"
 
 #. module: stock_barcodes
 #: model:ir.model.fields,field_description:stock_barcodes.field_stock_barcodes_option_group__group_key_for_todo_records
@@ -524,11 +522,12 @@ msgid "ID"
 msgstr "ID"
 
 #. module: stock_barcodes
+#: model:ir.model.fields,help:stock_barcodes.field_stock_barcodes_option_group__auto_lot
 #: model:ir.model.fields,help:stock_barcodes.field_wiz_stock_barcodes_read__auto_lot
 #: model:ir.model.fields,help:stock_barcodes.field_wiz_stock_barcodes_read_inventory__auto_lot
 #: model:ir.model.fields,help:stock_barcodes.field_wiz_stock_barcodes_read_picking__auto_lot
 msgid ""
-"If checked the lot will be set automatically with the same removal strategy"
+"If checked the lot will be set automatically with the same removal startegy"
 msgstr ""
 "Si esta marcado el lote se establecerá automáticamente según la estrategia "
 "de retirada"
@@ -637,6 +636,16 @@ msgid ""
 "operations)"
 msgstr ""
 "Permite trabajar con movimientos sin reserva (Sin operaciones detalladas)"
+
+#. module: stock_barcodes
+#: model:ir.model.fields,field_description:stock_barcodes.field_stock_barcodes_action__key_char_shortcut
+msgid "Key Char Shortcut"
+msgstr ""
+
+#. module: stock_barcodes
+#: model:ir.model.fields,field_description:stock_barcodes.field_stock_barcodes_action__key_shortcut
+msgid "Key Shortcut"
+msgstr ""
 
 #. module: stock_barcodes
 #: model:ir.model.fields,field_description:stock_barcodes.field_stock_barcodes_action____last_update
@@ -816,7 +825,7 @@ msgstr "Se ha encontrado más de un producto"
 #. module: stock_barcodes
 #: model:ir.model.fields,field_description:stock_barcodes.field_wiz_stock_barcodes_read_picking__move_line_ids
 msgid "Move Line"
-msgstr ""
+msgstr "Movimiento"
 
 #. module: stock_barcodes
 #: model:ir.model.fields,field_description:stock_barcodes.field_stock_barcodes_action__name
@@ -1005,6 +1014,11 @@ msgid "Position Index"
 msgstr ""
 
 #. module: stock_barcodes
+#: model:ir.model,name:stock_barcodes.model_res_config_settings
+msgid "Procurement purchase grouping settings"
+msgstr "Agrupación de la compra abastecida"
+
+#. module: stock_barcodes
 #: model:ir.model.fields,field_description:stock_barcodes.field_stock_barcodes_read_log__product_id
 #: model:ir.model.fields,field_description:stock_barcodes.field_wiz_stock_barcodes_new_lot__product_id
 #: model:ir.model.fields,field_description:stock_barcodes.field_wiz_stock_barcodes_read__product_id
@@ -1189,14 +1203,12 @@ msgid "Step"
 msgstr "Paso"
 
 #. module: stock_barcodes
-#: model:ir.model.fields,field_description:stock_barcodes.field_res_company__stock_barcodes_inventory_auto_lot
-msgid "Stock Barcodes Inventory Auto Lot"
+#: model:ir.model.fields,field_description:stock_barcodes.field_res_company__stock_barcodes_auto_lot
+msgid "Stock Barcodes Auto Lot"
 msgstr "Auto lote códigos de barras"
 
 #. module: stock_barcodes
 #: model:ir.model.fields,field_description:stock_barcodes.field_wiz_stock_barcodes_read_todo__stock_move_ids
-#, fuzzy
-#| msgid "Stock move lines"
 msgid "Stock Move"
 msgstr "Movimiento de existencias"
 
@@ -1214,13 +1226,7 @@ msgstr "Movimiento de existencias"
 #: code:addons/stock_barcodes/wizard/stock_barcodes_read.py:0
 #, python-format
 msgid "The product type is not allowed"
-msgstr ""
-
-#. module: stock_barcodes
-#: code:addons/stock_barcodes/wizard/stock_barcodes_read_picking.py:0
-#, python-format
-msgid "There are no stock moves to assign this operation"
-msgstr "No hay movimientos de stock para realizar esta operación"
+msgstr "Tipo de producto no permitido"
 
 #. module: stock_barcodes
 #: code:addons/stock_barcodes/wizard/stock_barcodes_read_inventory.py:0
@@ -1237,7 +1243,7 @@ msgstr "A escanear"
 #: model:ir.model.fields,field_description:stock_barcodes.field_wiz_stock_barcodes_read_picking__todo_line_id
 #: model:ir.model.fields,field_description:stock_barcodes.field_wiz_stock_barcodes_read_picking__todo_line_ids
 msgid "Todo Line"
-msgstr ""
+msgstr "Por hacer"
 
 #. module: stock_barcodes
 #: model:ir.model.fields,field_description:stock_barcodes.field_wiz_stock_barcodes_read_picking__todo_line_display_ids
@@ -1356,9 +1362,7 @@ msgstr "Asistente para leer códigos de barras desde el inventario"
 
 #. module: stock_barcodes
 #: model:ir.model,name:stock_barcodes.model_wiz_stock_barcodes_read_picking
-#, fuzzy
-#| msgid "Wizard to read barcode on picking batch"
-msgid "Wizard to read barcode on picking"
+msgid "Wizard to read barcode on picking batch"
 msgstr ""
 "Asistente para leer códigos de barras desde las agrupaciones de albaranes"
 
@@ -1430,3 +1434,9 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:stock_barcodes.view_stock_barcodes_todo_kanban
 msgid "\\u21E8"
 msgstr ""
+
+#~ msgid "Config Settings"
+#~ msgstr "Opciones de configuración"
+
+#~ msgid "There are no stock moves to assign this operation"
+#~ msgstr "No hay movimientos de stock para realizar esta operación"
