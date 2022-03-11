@@ -551,6 +551,8 @@ class WizStockBarcodesRead(models.AbstractModel):
         self.step = 0
         for option in options_required:
             if not getattr(self, option.field_name, False):
+                if option.field_name == "lot_id" and self.product_id.tracking == "none":
+                    continue
                 self.step = option.step
                 break
         if not self.step:
