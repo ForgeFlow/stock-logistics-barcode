@@ -48,6 +48,7 @@ class WizStockBarcodesReadTodo(models.TransientModel):
     uom_id = fields.Many2one(comodel_name="uom.uom")
     package_id = fields.Many2one(comodel_name="stock.quant.package")
     result_package_id = fields.Many2one(comodel_name="stock.quant.package")
+    package_product_qty = fields.Float()
 
     res_model_id = fields.Many2one(comodel_name="ir.model")
     res_ids = fields.Char()
@@ -87,6 +88,9 @@ class WizStockBarcodesReadTodo(models.TransientModel):
                         wiz_barcode.option_group_id.source_pending_moves
                         == "move_line_ids"
                     ):
+                        package_product_dic = (
+                            line.package_id._get_all_products_quantities()
+                        )
                         vals.update(
                             {
                                 "location_id": line.location_id.id,
@@ -99,6 +103,9 @@ class WizStockBarcodesReadTodo(models.TransientModel):
                                 "product_qty_reserved": line.product_qty,
                                 "line_ids": [(6, 0, line.ids)],
                                 "stock_move_ids": [(6, 0, line.move_id.ids)],
+                                "package_product_qty": package_product_dic[
+                                    line.product_id
+                                ],
                             }
                         )
                     else:

@@ -14,6 +14,7 @@
                 <field name="uom_id" />
                 <field name="package_id" />
                 <field name="result_package_id" />
+                <field name="package_product_qty" />
                 <field name="product_uom_qty" />
                 <field name="qty_done" />
                 <field name="state" />
@@ -54,6 +55,11 @@
                                         <span class="fa fa-dropbox" />
                                         <span>
                                             <field name="package_id" />
+                                            <t t-if="record.package_id">(<span
+                                                    t-esc="record.package_product_qty.value"
+                                                /> <t
+                                                    t-esc="record.uom_id.value"
+                                                />)</t>
                                         </span>
                                         <span>
                                             <field name="result_package_id" />
