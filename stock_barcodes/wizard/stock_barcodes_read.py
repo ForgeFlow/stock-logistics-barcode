@@ -291,7 +291,8 @@ class WizStockBarcodesRead(models.AbstractModel):
             option_func = getattr(self, "process_barcode_%s" % option.field_name, False)
             if option_func:
                 res = option_func()
-                self.play_sounds(res)
+                if option.required:
+                    self.play_sounds(res)
                 if res:
                     barcode_found = True
                     break

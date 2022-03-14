@@ -118,7 +118,6 @@ odoo.define("stock_barcodes.BasicController", function(require) {
                         setTimeout(() => {
                             this.$(`[name=${message.field_name}] input`).select();
                         }, 400);
-                        //                        Self.$(`[name=${message.field_name}] input`).select();
                     }
                 } else if (
                     channel ===
@@ -191,7 +190,6 @@ odoo.define("stock_barcodes.BasicController", function(require) {
          */
         _onDocumentKeyDown: function(ev) {
             var self = (ev.data && ev.data.controller) || this;
-            console.log("Estado menu: ", self.initialState.data.display_menu);
             if (self._is_valid_barcode_model) {
                 // ACCESS KEY PANEL MANAGEMENT
                 const alt = ev.altKey || ev.key === "Alt",
