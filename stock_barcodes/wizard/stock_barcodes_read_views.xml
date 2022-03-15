@@ -204,7 +204,7 @@
                                     />
                                 </div>
                             </group>
-                            <group name="option_qty" attrs="{'invisible': [('is_manual_qty', '=', False), ('manual_entry', '=', False)]}">
+                            <group name="option_qty" attrs="{'invisible': [('is_manual_qty', '=', False), ('manual_entry', '=', False)]}" col="1">
                                 <div class="row mt8" name="option_qty_header">
                                     <div class="col text-center pr-0" name="total_qty_header">
                                         <div>
@@ -364,7 +364,7 @@
                 <div class="col text-center pr-0">
                     <field
                         name="packaging_id"
-                        options="{'no_create': True}"
+                        options="{'no_open': True, 'no_create': True}"
                         domain="[('product_id', '=', product_id)]"
                         attrs="{'readonly': [('manual_entry', '=', False)]}"
                         force_save="1"

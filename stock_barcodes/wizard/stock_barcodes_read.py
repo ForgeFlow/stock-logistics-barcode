@@ -600,3 +600,7 @@ class WizStockBarcodesRead(models.AbstractModel):
             "stock_barcodes_read-{}".format(self.ids[0]),
             {"action": "focus", "field_name": field_name},
         )
+
+    @api.onchange("product_id")
+    def onchange_product_id(self):
+        self.product_uom_id = self.product_id.uom_id

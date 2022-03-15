@@ -198,3 +198,4 @@ class WizStockBarcodesReadTodo(models.TransientModel):
         self.wiz_barcode_id.determine_todo_action(forced_todo_line=self)
         for field in self.fields_to_fill_from_pending_line():
             self.wiz_barcode_id[field] = self[field]
+        self.wiz_barcode_id.product_uom_id = self.uom_id
