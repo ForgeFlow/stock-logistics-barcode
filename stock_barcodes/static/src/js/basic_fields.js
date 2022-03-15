@@ -39,6 +39,14 @@ odoo.define("stock_barcodes.FieldFloatNumericMode", function(require) {
                 this.getFocusableElement().blur();
             });
         },
+
+        _render: function() {
+            this._super.apply(this, arguments);
+            const accesskey = this.attrs && this.attrs.accesskey;
+            if (accesskey) {
+                this.$el.attr("accesskey", accesskey);
+            }
+        },
     });
 
     field_registry.add("FieldFloatNumericMode", FieldFloatNumericMode);

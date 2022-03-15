@@ -292,6 +292,13 @@ odoo.define("stock_barcodes.BasicController", function(require) {
                     self.$("button[name='action_confirm']:visible").click();
                     self.$("button[name='action_force_done']:visible").click();
                 }
+                if (
+                    (!ev.altKey || ev.key !== "Alt") &&
+                    !ev.ctrlKey &&
+                    ev.keyCode !== 113
+                ) {
+                    self._toggleAccessKeys(false);
+                }
             }
         },
         /* eslint-disable no-unused-vars */
