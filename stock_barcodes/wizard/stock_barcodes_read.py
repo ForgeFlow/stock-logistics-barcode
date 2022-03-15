@@ -17,6 +17,9 @@ class WizStockBarcodesRead(models.AbstractModel):
     product_id = fields.Many2one(
         comodel_name="product.product", domain=[("type", "in", _allowed_product_types)]
     )
+    product_uom_id = fields.Many2one(
+        comodel_name="uom.uom"
+    )
     product_tracking = fields.Selection(related="product_id.tracking", readonly=True)
     lot_id = fields.Many2one(comodel_name="stock.production.lot")
     location_id = fields.Many2one(comodel_name="stock.location")
@@ -429,6 +432,7 @@ class WizStockBarcodesRead(models.AbstractModel):
         if self.product_id != product:
             self.lot_id = False
         self.product_id = product
+        self.product_uom_id = self.product_id.uom_id
         self.product_qty = 0.0 if self.manual_entry or self.is_manual_qty else 1.0
 
     def action_packaging_scaned_post(self, packaging):

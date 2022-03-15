@@ -154,13 +154,8 @@ class WizStockBarcodesReadInventory(models.TransientModel):
     def _onchange_product_id(self):
         if self.product_id != self.lot_id.product_id:
             self.lot_id = False
-        self.auto_lot = self._default_auto_lot()
 
     @api.onchange("lot_id")
     def _onchange_lot_id(self):
         if self.lot_id and not self.env.context.get("keep_auto_lot"):
             self.auto_lot = False
-
-    @api.onchange("manual_entry")
-    def _onchange_manual_entry(self):
-        self.auto_lot = self._default_auto_lot()

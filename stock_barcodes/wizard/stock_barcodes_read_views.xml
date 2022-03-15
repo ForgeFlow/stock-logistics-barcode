@@ -204,66 +204,23 @@
                                     />
                                 </div>
                             </group>
-                            <group
-                                name="product"
-                                attrs="{'invisible': [('manual_entry', '=', False), ('is_manual_qty', '=', False)]}"
-                            >
-                                <div class="mt8 text-center">
-                                    <field
-                                        name="product_qty"
-                                        attrs="{'readonly': [('manual_entry', '=', False), ('is_manual_qty', '=', False)]}"
-                                        force_save="1"
-                                        widget="numeric_step"
-                                        options="{'auto_select': True}"
-                                        style="width:60%"
-                                    />
+                            <group name="option_qty" attrs="{'invisible': [('is_manual_qty', '=', False), ('manual_entry', '=', False)]}">
+                                <div class="row mt8" name="option_qty_header">
+                                    <div class="col text-center pr-0" name="total_qty_header">
+                                        <div>
+                                            <span>Total qty</span>
+                                        </div>
+                                    </div>
                                 </div>
-                            </group>
-                            <group
-                                name="package"
-                                groups="stock.group_tracking_lot"
-                                invisible="1"
-                            >
-                                <field
-                                    name="package_id"
-                                    options="{'no_create': True}"
-                                    attrs="{'readonly': [('manual_entry', '=', False)]}"
-                                    force_save="1"
-                                />
-                            </group>
-                            <group
-                                name="packaging"
-                                groups="product.group_stock_packaging"
-                            >
-                                <div>
-                                    <span
-                                        class="fa fa-dropbox fa-2x text-center"
-                                        style="width:15%"
-                                    />
-                                    <field
-                                        name="packaging_id"
-                                        options="{'no_create': True}"
-                                        domain="[('product_id', '=', product_id)]"
-                                        attrs="{'readonly': [('manual_entry', '=', False)]}"
-                                        force_save="1"
-                                        style="width:85%"
-                                        class="h5"
-                                    />
-                                </div>
-                            </group>
-                            <group
-                                name="packaging_qty"
-                                attrs="{'invisible': ['|', ('packaging_id', '=', False), '&amp;', ('manual_entry', '=', False), ('is_manual_qty', '=', False)]}"
-                            >
-                                <div class="mt8 text-center">
-                                    <field
-                                        name="packaging_qty"
-                                        attrs="{'readonly': [('manual_entry', '=', False), ('is_manual_qty', '=', False)]}"
-                                        force_save="1"
-                                        widget="numeric_step"
-                                        options="{'auto_select': True}"
-                                        style="width:60%"
-                                    />
+                                <div class="row" name="option_qty_fields">
+                                    <div class="col text-center" name="total_qty_field">
+                                        <field
+                                            name="product_qty"
+                                            force_save="1"
+                                            widget="numeric_step"
+                                            options="{'auto_select': True}"
+                                        />
+                                    </div>
                                 </div>
                             </group>
                             <group
@@ -396,6 +353,38 @@
             </form>
         </field>
     </record>
+
+    <record id="view_stock_barcodes_read_packaging_form" model="ir.ui.view">
+        <field name="name">stock.barcodes.read.packaging.form</field>
+        <field name="model">wiz.stock.barcodes.read</field>
+        <field name="inherit_id" ref="stock_barcodes.view_stock_barcodes_read_form"/>
+        <field name="groups_id" eval="[(4, ref('product.group_stock_packaging'))]" />
+        <field name="arch" type="xml">
+            <div name="total_qty_header" position="before">
+                <div class="col text-center pr-0">
+                    <field
+                        name="packaging_id"
+                        options="{'no_create': True}"
+                        domain="[('product_id', '=', product_id)]"
+                        attrs="{'readonly': [('manual_entry', '=', False)]}"
+                        force_save="1"
+                    />
+                </div>
+            </div>
+            <div name="total_qty_field" position="before">
+                <div class="col text-center">
+                    <field
+                        name="packaging_qty"
+                        force_save="1"
+                        widget="numeric_step"
+                        options="{'auto_select': True}"
+                    />
+                </div>
+            </div>
+        </field>
+    </record>
+
+
     <!--
      Open wizard in current target option to avoid that the wizard is
      closed after any button click,
