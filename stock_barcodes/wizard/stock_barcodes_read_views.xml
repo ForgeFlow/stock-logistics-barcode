@@ -304,7 +304,7 @@
                     <field
                         name="manual_entry"
                         widget="FieldBarcodeBooleanToggle"
-                        accesskey="9"
+                        accesskey="5"
                     />
                     <field name="display_menu" invisible="1" />
                     <label for="manual_entry">
@@ -317,14 +317,14 @@
                         icon="fa-plus"
                         attrs="{'invisible': [('manual_entry', '=', False)]}"
                         class="btn-primary"
-                        accesskey="5"
+                        accesskey="6"
                     />
                     <button
                         name="action_clean_values"
                         type="object"
                         class="btn-warning ml-auto oe_kanban_action_button"
                         attrs="{'invisible': [('display_menu', '=', True)]}"
-                        accesskey="6"
+                        accesskey="7"
                     >
                         <i class="fa fa-recycle" />
                     </button>
