@@ -255,23 +255,32 @@ odoo.define("stock_barcodes.BasicController", function(require) {
                         self._keybind_selectable_index
                     );
                 } else if (ev.keyCode === $.ui.keyCode.ENTER || ev.keyCode === 13) {
-                    if (!$(".modal-dialog:visible").length) {
-                        // Only one button is visible
-                        const $action_confirm = self.$(
-                            "button[name='action_confirm']:visible"
+                    if ($(".modal-dialog:visible").length) {
+                        // Workaround: Bootstrap don't close modal when use 'enter' so, force click event.
+                        const $button_confirm = $(".modal-footer .btn-primary:visible");
+                        if ($button_confirm.length) {
+                            $button_confirm.click();
+                        }
+                    } else {
+                        // Try to click selectable item
+                        const selectable_clicked = self._set_click_on_selectable_item(
+                            self._keybind_selectable_items,
+                            self._keybind_selectable_index
                         );
-                        const $action_confirm_force = self.$(
-                            "button[name='action_force_done']:visible"
-                        );
-                        if ($action_confirm.length) {
-                            $action_confirm.click();
-                        } else if ($action_confirm_force.length) {
-                            $action_confirm_force.click();
-                        } else {
-                            self._set_click_on_selectable_item(
-                                self._keybind_selectable_items,
-                                self._keybind_selectable_index
+                        if (!selectable_clicked) {
+                            // If not, try default validation buttons
+                            // Only one button is visible
+                            const $action_confirm = self.$(
+                                "button[name='action_confirm']:visible"
                             );
+                            const $action_confirm_force = self.$(
+                                "button[name='action_force_done']:visible"
+                            );
+                            if ($action_confirm.length) {
+                                $action_confirm.click();
+                            } else if ($action_confirm_force.length) {
+                                $action_confirm_force.click();
+                            }
                         }
                     }
                 }
@@ -279,15 +288,19 @@ odoo.define("stock_barcodes.BasicController", function(require) {
         },
 
         _set_focus_on_selectable_item: function(items, index) {
-            if (items.length && index >= 0) {
+            if (items && index >= 0 && index < items.length) {
                 items[index].focus();
+                return true;
             }
+            return false;
         },
 
         _set_click_on_selectable_item: function(items, index) {
-            if (items.length && index >= 0) {
+            if (items && index >= 0 && index < items.length) {
                 items[index].click();
+                return true;
             }
+            return false;
         },
 
         /**
