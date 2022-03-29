@@ -392,6 +392,23 @@
             />
         </record>
         <record
+            id="stock_barcodes_option_result_package_picking_relocation"
+            model="stock.barcodes.option"
+        >
+            <field name="name">Package Dest.</field>
+            <field name="step">2</field>
+            <field name="sequence">35</field>
+            <field name="field_name">result_package_id</field>
+            <field name="filled_default">False</field>
+            <field name="forced">False</field>
+            <field name="to_scan">True</field>
+            <field name="clean_after_done">True</field>
+            <field
+                name="option_group_id"
+                ref="stock_barcodes.stock_barcodes_option_group_picking_relocation"
+            />
+        </record>
+        <record
             id="stock_barcodes_option_location_dest_picking_relocation"
             model="stock.barcodes.option"
         >
