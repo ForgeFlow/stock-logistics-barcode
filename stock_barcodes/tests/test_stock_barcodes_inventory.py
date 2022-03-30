@@ -181,4 +181,3 @@ class TestStockBarcodesInventory(TestStockBarcodes):
         action = self.inventory.action_barcode_scan()
         wiz_scan_inventory = self.ScanReadInventory.browse(action["res_id"])
         self.assertTrue(wiz_scan_inventory)
-
