@@ -333,6 +333,7 @@
                         type="object"
                         class="btn-success ml-auto oe_kanban_action_button"
                         attrs="{'invisible': ['|', '|', ('is_manual_confirm', '=', False), ('display_menu', '=', True), ('visible_force_done', '=', True)]}"
+                        accesskey="8"
                     >
                         <i class="fa fa-check" />
                     </button>
@@ -342,6 +343,7 @@
                         icon="fa-check"
                         attrs="{'invisible': [('visible_force_done', '=', False)]}"
                         class="btn-danger ml-auto oe_kanban_action_button"
+                        accesskey="8"
                     />
                     <button
                         name="open_actions"
