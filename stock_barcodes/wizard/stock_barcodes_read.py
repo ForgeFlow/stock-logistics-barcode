@@ -594,6 +594,8 @@ class WizStockBarcodesRead(models.AbstractModel):
             )
 
     def _set_focus_on_qty_input(self, field_name="product_qty"):
+        if field_name == "product_qty" and self.packaging_id:
+            field_name = "packaging_qty"
         self.env["bus.bus"].sendone(
             "stock_barcodes_read-{}".format(self.ids[0]),
             {"action": "focus", "field_name": field_name},
