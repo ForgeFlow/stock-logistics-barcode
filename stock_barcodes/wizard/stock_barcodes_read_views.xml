@@ -206,7 +206,7 @@
                             </group>
                             <group
                                 name="option_qty"
-                                attrs="{'invisible': [('is_manual_qty', '=', False), ('manual_entry', '=', False)]}"
+                                attrs="{'invisible': ['|', ('product_id', '=', False),'&amp;', ('is_manual_qty', '=', False), ('manual_entry', '=', False)]}"
                                 col="1"
                             >
                                 <div class="row mt8" name="option_qty_header">
