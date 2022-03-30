@@ -95,6 +95,11 @@
         <field name="arch" type="xml">
             <field name="name" position="after">
                 <field name="code" string="Type of operation" />
+                <filter
+                    string="Barcode Options"
+                    name="barcode_options"
+                    domain="[('barcode_option_group_id','!=',False)]"
+                />
             </field>
         </field>
     </record>
