@@ -26,6 +26,10 @@
                 type="application/javascript"
                 src="/stock_barcodes/static/src/js/form_view.js"
             />
+            <script
+                type="application/javascript"
+                src="/stock_barcodes/static/src/js/numeric_step.js"
+            />
             <link rel="stylesheet" href="/stock_barcodes/static/src/css/stock.scss" />
         </xpath>
     </template>

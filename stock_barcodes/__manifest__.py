@@ -8,7 +8,7 @@
     "website": "https://github.com/OCA/stock-logistics-barcode",
     "license": "AGPL-3",
     "category": "Extra Tools",
-    "depends": ["barcodes", "stock"],
+    "depends": ["barcodes", "stock", "web_widget_numeric_step"],
     "data": [
         "security/ir.model.access.csv",
         "data/stock_barcodes_action.xml",
