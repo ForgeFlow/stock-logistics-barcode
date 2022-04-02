@@ -311,15 +311,6 @@
                         Edit
                     </label>
                     <button
-                        name="action_manual_entry"
-                        type="object"
-                        string="Manual entry"
-                        icon="fa-plus"
-                        attrs="{'invisible': [('manual_entry', '=', False)]}"
-                        class="btn-primary"
-                        accesskey="6"
-                    />
-                    <button
                         name="action_clean_values"
                         type="object"
                         class="btn-warning ml-auto oe_kanban_action_button"
@@ -332,7 +323,7 @@
                         name="action_confirm"
                         type="object"
                         class="btn-success ml-auto oe_kanban_action_button"
-                        attrs="{'invisible': ['|', '|', ('is_manual_confirm', '=', False), ('display_menu', '=', True), ('visible_force_done', '=', True)]}"
+                        attrs="{'invisible': ['|', '|', '|', ('manual_entry', '=', False), ('is_manual_confirm', '=', False), ('display_menu', '=', True), ('visible_force_done', '=', True)]}"
                         accesskey="8"
                     >
                         <i class="fa fa-check" />
