@@ -604,3 +604,8 @@ class WizStockBarcodesRead(models.AbstractModel):
     @api.onchange("product_id")
     def onchange_product_id(self):
         self.product_uom_id = self.product_id.uom_id
+
+    @api.onchange("manual_entry")
+    def onchange_manual_entry(self):
+        if self.manual_entry and self.option_group_id.manual_entry_field_focus:
+            self._set_focus_on_qty_input(self.option_group_id.manual_entry_field_focus)

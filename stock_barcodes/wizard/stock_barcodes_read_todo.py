@@ -199,3 +199,4 @@ class WizStockBarcodesReadTodo(models.TransientModel):
         for field in self.fields_to_fill_from_pending_line():
             self.wiz_barcode_id[field] = self[field]
         self.wiz_barcode_id.product_uom_id = self.uom_id
+        self.wiz_barcode_id._set_focus_on_qty_input()
