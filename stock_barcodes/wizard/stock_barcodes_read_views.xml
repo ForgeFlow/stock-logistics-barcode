@@ -14,6 +14,7 @@
                             options="{'no_open': True}"
                             nolabel="1"
                             mode="kanban"
+                            context="{'context_display_menu': display_menu}"
                         >
                             <tree string="Actions">
                                 <field name="name" />
@@ -32,7 +33,7 @@
                                                 class="pull-right btn"
                                                 style="width:100%"
                                                 t-att-aria-keyshortcuts="key_char_shortcut"
-                                                t-att-accesskey="record.key_char_shortcut.raw_value"
+                                                t-att-accesskey="context.context_display_menu &amp;&amp; record.key_char_shortcut.raw_value || ''"
                                             >
                                                 <div class="row">
                                                     <div class="col">
