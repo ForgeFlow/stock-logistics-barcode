@@ -767,7 +767,7 @@ msgstr "Manual"
 #, fuzzy
 #| msgid "Manual entry OK"
 msgid "Manual Entry Field Focus"
-msgstr "Entrada manual correcta"
+msgstr "Campo a seleccionar al activar entrada manual"
 
 #. module: stock_barcodes
 #: model:ir.model.fields,field_description:stock_barcodes.field_stock_barcodes_option_group__manual_entry
