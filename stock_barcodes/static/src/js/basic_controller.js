@@ -90,7 +90,6 @@ odoo.define("stock_barcodes.BasicController", function(require) {
                 ["form", "kanban"].indexOf(this.initialState.viewType) !== -1
             ) {
                 this._appendBarcodesSounds();
-                this._postProcessFields();
                 $(document).on("keydown", {controller: this}, this._onDocumentKeyDown);
                 $(document).on("keyup", {controller: this}, this._onDocumentKeyUp);
                 this.call(
@@ -335,7 +334,6 @@ odoo.define("stock_barcodes.BasicController", function(require) {
         /* eslint-disable no-unused-vars */
         update: function(params, options) {
             return this._super.apply(this, arguments).then(() => {
-                this._postProcessFields();
                 this._keybind_selectable_index = -1;
                 this._keybind_selectable_items = this.$(
                     ".oe_kanban_action_button:visible,.oe_btn_quick_action:visible"
