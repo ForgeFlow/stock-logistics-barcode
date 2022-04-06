@@ -99,9 +99,7 @@ odoo.define("stock_barcodes.BasicController", function(require) {
                     this,
                     this.onBusNotificationBarcode
                 );
-                this._keybind_selectable_items = this.$(
-                    ".oe_kanban_action_button:visible, .oe_btn_quick_action:visible"
-                );
+                this._update_selectable_items();
             }
         },
 
@@ -315,6 +313,15 @@ odoo.define("stock_barcodes.BasicController", function(require) {
             return false;
         },
 
+        _update_selectable_items: function(reset_index) {
+            if (reset_index) {
+                this._keybind_selectable_index = -1;
+            }
+            this._keybind_selectable_items = this.$(
+                ".oe_kanban_action_button:visible,.oe_btn_quick_action:visible"
+            );
+        },
+
         /**
          * @private
          * @param {KeyboardEvent} ev
@@ -331,15 +338,25 @@ odoo.define("stock_barcodes.BasicController", function(require) {
                 }
             }
         },
+
         /* eslint-disable no-unused-vars */
         update: function(params, options) {
-            return this._super.apply(this, arguments).then(() => {
-                this._keybind_selectable_index = -1;
-                this._keybind_selectable_items = this.$(
-                    ".oe_kanban_action_button:visible,.oe_btn_quick_action:visible"
-                );
+            return this._super.apply(this, arguments).then(res => {
+                this._update_selectable_items(true);
+                return res;
             });
         },
+
+        /**
+         * @override
+         */
+        _applyChanges: function() {
+            return this._super.apply(this, arguments).then(res => {
+                this._update_selectable_items();
+                return res;
+            });
+        },
+
         open_action_menu: function() {
             return this.do_action("stock_barcodes.action_stock_barcodes_action", {
                 name: "Barcode wizard menu",
