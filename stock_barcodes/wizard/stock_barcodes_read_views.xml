@@ -306,9 +306,10 @@
                         name="manual_entry"
                         widget="FieldBarcodeBooleanToggle"
                         accesskey="5"
+                        attrs="{'invisible': [('display_menu', '=', True)]}"
                     />
                     <field name="display_menu" invisible="1" />
-                    <label for="manual_entry">
+                    <label for="manual_entry" attrs="{'invisible': [('display_menu', '=', True)]}">
                         Edit
                     </label>
                     <button
@@ -324,7 +325,7 @@
                         name="action_confirm"
                         type="object"
                         class="btn-success ml-auto oe_kanban_action_button"
-                        attrs="{'invisible': ['|', '|', '|', ('manual_entry', '=', False), ('is_manual_confirm', '=', False), ('display_menu', '=', True), ('visible_force_done', '=', True)]}"
+                        attrs="{'invisible': ['|', '|','&amp;', ('is_manual_confirm', '=', False), ('manual_entry', '=', False), ('display_menu', '=', True), ('visible_force_done', '=', True)]}"
                         accesskey="8"
                     >
                         <i class="fa fa-check" />
