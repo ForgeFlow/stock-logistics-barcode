@@ -4,8 +4,7 @@
     box-shadow: none !important;
 }
 
-.oe_sticky_bottom {
-    position: sticky;
+.oe_stock_barcodes_bottombar {
     bottom: 0;
     padding: 0.5em;
     background-color: $o-view-background-color;
@@ -14,6 +13,9 @@
 }
 
 .oe_stock_barcordes_form {
+    padding: 0 !important;
+    height: 100%;
+
     .o_group {
         &.o_inner_group {
             margin-bottom: 0 !important;
@@ -47,6 +49,10 @@
         top: 0;
         width: 100%;
         border-radius: 0;
+    }
+
+    .oe_stock_barcordes_content {
+        overflow: hidden scroll;
     }
 }
 

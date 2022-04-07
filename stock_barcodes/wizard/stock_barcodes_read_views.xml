@@ -4,7 +4,7 @@
         <field name="model">wiz.stock.barcodes.read</field>
         <field name="arch" type="xml">
             <form string="Barcodes" class="oe_stock_barcordes_form">
-                <sheet>
+                <div class="d-flex flex-column h-100">
                     <div
                         name="menu_actions"
                         attrs="{'invisible': [('display_menu', '=', False)]}"
@@ -51,7 +51,10 @@
                             </kanban>
                         </field>
                     </div>
-                    <div attrs="{'invisible': [('display_menu', '=', True)]}">
+                    <div
+                        attrs="{'invisible': [('display_menu', '=', True)]}"
+                        class="flex-fill oe_stock_barcordes_content"
+                    >
                         <div name="info" class="text-center h3">
                             <div
                                 class="alert alert-success"
@@ -300,64 +303,64 @@
                             </group>
                         </group>
                     </div>
-                </sheet>
-                <div class="oe_sticky_bottom d-flex">
-                    <field
-                        name="manual_entry"
-                        widget="FieldBarcodeBooleanToggle"
-                        accesskey="5"
-                        attrs="{'invisible': [('display_menu', '=', True)]}"
-                    />
-                    <field name="display_menu" invisible="1" />
-                    <label
-                        for="manual_entry"
-                        attrs="{'invisible': [('display_menu', '=', True)]}"
-                    >
-                        Edit
-                    </label>
-                    <button
-                        name="action_clean_values"
-                        type="object"
-                        class="btn-warning ml-auto oe_kanban_action_button"
-                        attrs="{'invisible': [('display_menu', '=', True)]}"
-                        accesskey="7"
-                    >
-                        <i class="fa fa-recycle" />
-                    </button>
-                    <button
-                        name="action_confirm"
-                        type="object"
-                        class="btn-success ml-auto oe_kanban_action_button"
-                        attrs="{'invisible': ['|', '|','&amp;', ('is_manual_confirm', '=', False), ('manual_entry', '=', False), ('display_menu', '=', True), ('visible_force_done', '=', True)]}"
-                        accesskey="8"
-                    >
-                        <i class="fa fa-check" />
-                    </button>
-                    <button
-                        name="action_force_done"
-                        type="object"
-                        icon="fa-check"
-                        attrs="{'invisible': [('visible_force_done', '=', False)]}"
-                        class="btn-danger ml-auto oe_kanban_action_button"
-                        accesskey="8"
-                    />
-                    <button
-                        name="open_actions"
-                        type="object"
-                        string="Actions"
-                        class="btn-primary ml-auto oe_kanban_action_button"
-                        attrs="{'invisible': [('display_menu', '=', True)]}"
-                        accesskey="0"
-                    />
-                    <button
-                        name="action_back"
-                        type="object"
-                        string="Back"
-                        class="btn-secondary ml-auto oe_kanban_action_button"
-                        icon="fa-backward"
-                        attrs="{'invisible': [('display_menu', '=', False)]}"
-                        accesskey="7"
-                    />
+                    <div class="oe_stock_barcodes_bottombar d-flex">
+                        <field
+                            name="manual_entry"
+                            widget="FieldBarcodeBooleanToggle"
+                            accesskey="5"
+                            attrs="{'invisible': [('display_menu', '=', True)]}"
+                        />
+                        <field name="display_menu" invisible="1" />
+                        <label
+                            for="manual_entry"
+                            attrs="{'invisible': [('display_menu', '=', True)]}"
+                        >
+                            Edit
+                        </label>
+                        <button
+                            name="action_clean_values"
+                            type="object"
+                            class="btn-warning ml-auto oe_kanban_action_button"
+                            attrs="{'invisible': [('display_menu', '=', True)]}"
+                            accesskey="7"
+                        >
+                            <i class="fa fa-recycle" />
+                        </button>
+                        <button
+                            name="action_confirm"
+                            type="object"
+                            class="btn-success ml-auto oe_kanban_action_button"
+                            attrs="{'invisible': ['|', '|','&amp;', ('is_manual_confirm', '=', False), ('manual_entry', '=', False), ('display_menu', '=', True), ('visible_force_done', '=', True)]}"
+                            accesskey="8"
+                        >
+                            <i class="fa fa-check" />
+                        </button>
+                        <button
+                            name="action_force_done"
+                            type="object"
+                            icon="fa-check"
+                            attrs="{'invisible': [('visible_force_done', '=', False)]}"
+                            class="btn-danger ml-auto oe_kanban_action_button"
+                            accesskey="8"
+                        />
+                        <button
+                            name="open_actions"
+                            type="object"
+                            string="Actions"
+                            class="btn-primary ml-auto oe_kanban_action_button"
+                            attrs="{'invisible': [('display_menu', '=', True)]}"
+                            accesskey="0"
+                        />
+                        <button
+                            name="action_back"
+                            type="object"
+                            string="Back"
+                            class="btn-secondary ml-auto oe_kanban_action_button"
+                            icon="fa-backward"
+                            attrs="{'invisible': [('display_menu', '=', False)]}"
+                            accesskey="7"
+                        />
+                    </div>
                 </div>
             </form>
         </field>
