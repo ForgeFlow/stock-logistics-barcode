@@ -110,14 +110,17 @@
                     attrs="{'invisible': [('picking_type_code', '=', 'outgoing')]}"
                 >
                     <div>
-                        <span class="fa fa-share fa-2x text-center" style="width:15%" />
+                        <strong class=" d-none d-sm-block">Dest. Location</strong>
+                        <span
+                            class="fa fa-share text-center d-sm-none oe_span_small_icon"
+                        />
                         <field
                             name="location_dest_id"
                             options="{'no_create': True}"
                             attrs="{'readonly': [('manual_entry', '=', False)]}"
                             force_save="1"
                             style="width:85%"
-                            class="h4"
+                            class="h5"
                         />
                     </div>
                 </group>

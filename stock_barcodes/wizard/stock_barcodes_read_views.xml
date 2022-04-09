@@ -115,9 +115,11 @@
                         <group name="scan_fields" class="bg-light">
                             <group name="location">
                                 <div class="mt4">
+                                    <strong
+                                        class=" d-none d-sm-block"
+                                    >Source Location</strong>
                                     <span
-                                        class="fa fa-map-marker text-center"
-                                        style="width:15%"
+                                        class="fa fa-map-marker d-sm-none oe_span_small_icon"
                                     />
                                     <field
                                         name="location_id"
@@ -134,9 +136,11 @@
                                 groups="stock.group_tracking_lot"
                             >
                                 <div class="mt4">
+                                    <strong
+                                        class="d-none d-sm-block"
+                                    >Source Package -> Result Package</strong>
                                     <span
-                                        class="fa fa-inbox text-center"
-                                        style="width:15%"
+                                        class="fa fa-inbox d-sm-none oe_span_small_icon"
                                     />
                                     <field
                                         name="package_id"
@@ -158,10 +162,10 @@
                                 </div>
                             </group>
                             <group>
-                                <div>
+                                <div class="mt4">
+                                    <strong class="d-none d-sm-block">Product</strong>
                                     <span
-                                        class="fa fa-th-list text-center"
-                                        style="width:15%"
+                                        class="fa fa-th-list d-sm-none oe_span_small_icon"
                                     />
                                     <field
                                         name="product_id"
@@ -178,9 +182,9 @@
                                 attrs="{'invisible': [('product_tracking', 'in', [False, 'none'])]}"
                             >
                                 <div>
+                                    <strong class="d-none d-sm-block">Lot S/N</strong>
                                     <span
-                                        class="fa fa-tags text-center"
-                                        style="width:15%"
+                                        class="fa fa-tags d-sm-none oe_span_small_icon"
                                     />
                                     <field
                                         name="lot_id"
