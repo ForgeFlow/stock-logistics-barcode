@@ -68,28 +68,6 @@
                                         </td>
                                     </tr>
                                 </table>
-                                <div class="row">
-                                    <div class="col-4">
-                                        <span>
-                                            <span class="fa fa-tags" />
-                                            <field name="lot_id" />
-                                        </span>
-                                    </div>
-                                    <div class="col-8">
-                                        <span class="fa fa-dropbox" />
-                                        <span>
-                                            <field name="package_id" />
-                                            <t t-if="record.package_id">(<span
-                                                    t-esc="record.package_product_qty.value"
-                                                /> <t
-                                                    t-esc="record.uom_id.value.slice(0,3)"
-                                                />)</t>
-                                        </span>
-                                        <span>
-                                            <field name="result_package_id" />
-                                        </span>
-                                    </div>
-                                </div>
                             </t>
                             <div class="row">
                                 <div class="col-12">
