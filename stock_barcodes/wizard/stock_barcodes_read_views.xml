@@ -324,7 +324,7 @@
                         <button
                             name="action_clean_values"
                             type="object"
-                            class="btn-warning ml-auto oe_kanban_action_button"
+                            class="btn-warning ml-auto oe_kanban_action_button btn-sm"
                             attrs="{'invisible': [('display_menu', '=', True)]}"
                             accesskey="7"
                         >
@@ -333,7 +333,7 @@
                         <button
                             name="action_confirm"
                             type="object"
-                            class="btn-success ml-auto oe_kanban_action_button"
+                            class="btn-success ml-auto oe_kanban_action_button btn-sm"
                             attrs="{'invisible': ['|', '|','&amp;', ('is_manual_confirm', '=', False), ('manual_entry', '=', False), ('display_menu', '=', True), ('visible_force_done', '=', True)]}"
                             accesskey="8"
                         >
@@ -344,14 +344,14 @@
                             type="object"
                             icon="fa-check"
                             attrs="{'invisible': [('visible_force_done', '=', False)]}"
-                            class="btn-danger ml-auto oe_kanban_action_button"
+                            class="btn-danger ml-auto oe_kanban_action_button btn-sm"
                             accesskey="8"
                         />
                         <button
                             name="open_actions"
                             type="object"
                             string="Actions"
-                            class="btn-primary ml-auto oe_kanban_action_button"
+                            class="btn-primary ml-auto oe_kanban_action_button btn-sm"
                             attrs="{'invisible': [('display_menu', '=', True)]}"
                             accesskey="0"
                         />
@@ -359,7 +359,7 @@
                             name="action_back"
                             type="object"
                             string="Back"
-                            class="btn-secondary ml-auto oe_kanban_action_button"
+                            class="btn-secondary ml-auto oe_kanban_action_button btn-sm"
                             icon="fa-backward"
                             attrs="{'invisible': [('display_menu', '=', False)]}"
                             accesskey="7"
