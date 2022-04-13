@@ -55,6 +55,14 @@ class WizStockBarcodesReadTodo(models.TransientModel):
     line_ids = fields.Many2many(comodel_name="stock.move.line")
     stock_move_ids = fields.Many2many(comodel_name="stock.move")
     position_index = fields.Integer()
+    picking_code = fields.Selection(
+        [
+            ("incoming", "Receipt"),
+            ("outgoing", "Delivery"),
+            ("internal", "Internal Transfer"),
+        ],
+        "Type of Operation",
+    )
 
     def _group_key(self, wiz, line):
         group_key_for_todo_records = wiz.option_group_id.group_key_for_todo_records
@@ -83,6 +91,7 @@ class WizStockBarcodesReadTodo(models.TransientModel):
                         "product_uom_qty": line.product_uom_qty,
                         "name": "To do action",
                         "position_index": position,
+                        "picking_code": line.picking_code,
                     }
                     if (
                         wiz_barcode.option_group_id.source_pending_moves
