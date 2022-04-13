@@ -197,14 +197,14 @@
                                         class="h5"
                                     />
                                     <button
-                                        class="btn btn-warning"
+                                        class="btn btn-warning btn-sm"
                                         name="action_clean_lot"
                                         type="object"
                                         icon="fa-recycle fa-1x"
                                         attrs="{'invisible': [('lot_id', '=', False)]}"
                                     />
                                     <button
-                                        class="btn btn-secondary ml-2"
+                                        class="btn btn-secondary ml-2 btn-sm"
                                         type="action"
                                         name="%(action_stock_barcodes_new_lot)d"
                                         icon="fa-plus fa-1x"
