@@ -29,17 +29,23 @@
                                 <div class="col">
                                     <span class="fa fa-map-marker" />
                                     <strong>
-                                        <t t-if="picking_code == 'incoming'">
+                                        <span
+                                            attrs="{'invisible': [('picking_code', '!=', 'incoming')]}"
+                                        >
                                             <field name="location_dest_name" />
-                                        </t>
-                                        <t t-if="picking_code == 'internal'">
+                                        </span>
+                                        <span
+                                            attrs="{'invisible': [('picking_code', '!=', 'internal')]}"
+                                        >
                                             <field name="location_name" /> \u21E8 <field
                                                 name="location_dest_name"
                                             />
-                                        </t>
-                                        <t t-if="picking_code == 'outgoing'">
+                                        </span>
+                                        <span
+                                            attrs="{'invisible': [('picking_code', '!=', 'outgoing')]}"
+                                        >
                                             <field name="location_name" />
-                                        </t>
+                                        </span>
                                     </strong>
                                 </div>
                             </div>

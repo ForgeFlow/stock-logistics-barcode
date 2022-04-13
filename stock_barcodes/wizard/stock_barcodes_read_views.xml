@@ -150,7 +150,9 @@
                                         style="width:40%"
                                         class="h5"
                                     />
-                                    ->
+                                    <span
+                                        attrs="{'invisible': [('result_package_id', '=', False)]}"
+                                    >-></span>
                                     <field
                                         name="result_package_id"
                                         options="{'no_create': True}"
