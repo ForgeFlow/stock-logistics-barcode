@@ -73,6 +73,7 @@ class WizStockBarcodesRead(models.AbstractModel):
         "removal startegy",
         compute="_compute_is_manual_qty",
     )
+    display_assign_serial = fields.Boolean(compute="_compute_display_assign_serial")
 
     @api.depends("res_id")
     def _compute_action_ids(self):
@@ -103,6 +104,11 @@ class WizStockBarcodesRead(models.AbstractModel):
             domain_quant, ["quantity"], [], orderby="id"
         )
         self.qty_available = groups[0]["quantity"]
+
+    @api.depends("product_id")
+    def _compute_display_assign_serial(self):
+        for rec in self:
+            rec.display_assign_serial = rec.product_id.tracking == "serial"
 
     @api.onchange("packaging_qty")
     def onchange_packaging_qty(self):
@@ -188,6 +194,8 @@ class WizStockBarcodesRead(models.AbstractModel):
                 self._set_messagge_info(
                     "more_match", _("More than one lot found\nScan product before")
                 )
+            elif self.product_id and self.option_group_id.create_lot:
+                self._create_lot(self.barcode)
         return False
 
     def process_barcode_package_id(self):
@@ -609,3 +617,16 @@ class WizStockBarcodesRead(models.AbstractModel):
     def onchange_manual_entry(self):
         if self.manual_entry and self.option_group_id.manual_entry_field_focus:
             self._set_focus_on_qty_input(self.option_group_id.manual_entry_field_focus)
+
+    def _prepare_lot_values(self, barcode):
+        return {
+            "name": barcode,
+            "product_id": self.product_id.id,
+            "company_id": self.env.company.id,
+        }
+
+    def _create_lot(self, barcode):
+        new_lot = self.env["stock.production.lot"].create(
+            self._prepare_lot_values(barcode)
+        )
+        self.lot_id = new_lot

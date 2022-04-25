@@ -70,6 +70,11 @@ class StockBarcodesOptionGroup(models.Model):
         help="If checked the lot will be set automatically with the same "
         "removal startegy",
     )
+    create_lot = fields.Boolean(
+        string="Create lots if not match",
+        help="If checked the lot will created automatically with the scanned barcode "
+        "if not exists ",
+    )
 
     def get_option_value(self, field_name, attribute):
         option = self.option_ids.filtered(lambda op: op.field_name == field_name)[:1]

@@ -36,6 +36,7 @@
                             <field name="allow_negative_quant" />
                             <field name="fill_fields_from_lot" />
                             <field name="auto_lot" />
+                            <field name="create_lot" />
                         </group>
                     </group>
                     <field name="option_ids">

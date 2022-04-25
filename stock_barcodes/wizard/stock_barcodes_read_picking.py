@@ -576,6 +576,17 @@ class WizStockBarcodesReadPicking(models.TransientModel):
             self.get_lot_by_removal_strategy()
         return res
 
+    def action_assign_serial(self):
+        move = self.env["stock.move"].search(self._prepare_stock_moves_domain())
+        if len(move) > 1:
+            smls = move.move_line_ids.filtered(
+                lambda ln: ln.barcode_scan_state == "pending"
+            )
+            move = smls[:1].move_id
+        if move:
+            return move.action_assign_serial()
+        raise ValidationError(_("No pending lines for this product"))
+
 
 class WizCandidatePicking(models.TransientModel):
     """

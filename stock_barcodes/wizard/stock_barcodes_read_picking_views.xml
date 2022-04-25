@@ -194,6 +194,17 @@
                     </field>
                 </group>
             </group>
+            <xpath expr="//button[@id='btn_create_lot']" position="after">
+                <field name="display_assign_serial" invisible="1" />
+                <button
+                    name="action_assign_serial"
+                    type="object"
+                    string="Range"
+                    title="Assign Serial Numbers"
+                    attrs="{'invisible': [('display_assign_serial', '=', False)]}"
+                    class="btn btn-secondary btn-sm"
+                />
+            </xpath>
         </field>
     </record>
     <!--

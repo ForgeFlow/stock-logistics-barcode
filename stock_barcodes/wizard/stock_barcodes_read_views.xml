@@ -206,6 +206,7 @@
                                         attrs="{'invisible': [('lot_id', '=', False)]}"
                                     />
                                     <button
+                                        id="btn_create_lot"
                                         class="btn btn-secondary ml-2 btn-sm"
                                         type="action"
                                         name="%(action_stock_barcodes_new_lot)d"
