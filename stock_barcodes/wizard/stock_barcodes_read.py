@@ -196,6 +196,7 @@ class WizStockBarcodesRead(models.AbstractModel):
                 )
             elif self.product_id and self.option_group_id.create_lot:
                 self._create_lot(self.barcode)
+                return True
         return False
 
     def process_barcode_package_id(self):
