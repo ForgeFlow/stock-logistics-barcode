@@ -416,7 +416,12 @@ class WizStockBarcodesReadPicking(models.TransientModel):
                 )
             else:
                 assigned_qty = available_qty
-            sml_vals.update({"qty_done": line.qty_done + assigned_qty})
+            sml_vals.update(
+                {
+                    "qty_done": line.qty_done + assigned_qty,
+                    "result_package_id": self.result_package_id.id,
+                }
+            )
             # Add or remove result_package_id
             package_qty_available = sum(self.package_id.quant_ids.mapped("quantity"))
             if sml_vals["qty_done"] >= package_qty_available:
@@ -711,3 +716,6 @@ class WizCandidatePicking(models.TransientModel):
             self.env.context.get("picking_id", False)
         )
         return picking.with_context(control_panel_hidden=False).get_formview_action()
+
+    def action_put_in_pack(self):
+        self.picking_id.put_in_pack()

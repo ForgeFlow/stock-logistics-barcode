@@ -161,6 +161,22 @@
                                         style="width:40%"
                                         class="h5"
                                     />
+                                    <button
+                                        class="btn btn-warning btn-sm oe_kanban_action_button"
+                                        name="action_clean_package"
+                                        type="object"
+                                        icon="fa-recycle fa-1x"
+                                        attrs="{'invisible': [('package_id', '=', False), ('result_package_id', '=', False)]}"
+                                        title="Clean package info"
+                                    />
+                                    <button
+                                        id="btn_create_package"
+                                        class="btn btn-secondary ml-2 btn-sm oe_kanban_action_button"
+                                        type="object"
+                                        name="action_create_package"
+                                        icon="fa-plus fa-1x"
+                                        title="Create new package"
+                                    />
                                 </div>
                             </group>
                             <group>

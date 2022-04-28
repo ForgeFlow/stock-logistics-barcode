@@ -70,22 +70,34 @@
                                                 />
                                             </strong>
                                         </div>
-                                        <div>
-                                            <button
-                                                name="action_open_picking"
-                                                type="object"
-                                                class="btn btn-secondary pull-left"
-                                                context="{'wiz_barcode_id': parent.id, 'picking_id': picking_id}"
-                                            >Open</button>
-                                            <!-- FIXME:  Fix confirm question -->
-                                            <button
-                                                name="action_validate_picking"
-                                                type="object"
-                                                t-att-class="'btn pull-right' + (record.is_pending.raw_value == false ? ' btn-primary' : ' btn-secondary')"
-                                                attrs="{'invisible': [('state', 'not in', 'assigned')]}"
-                                                confirm="Are you sure to validate the picking ?"
-                                                context="{'wiz_barcode_id': parent.id, 'picking_id': picking_id}"
-                                            >Validate</button>
+                                        <div class="row">
+                                            <div class="col">
+                                                <button
+                                                    name="action_open_picking"
+                                                    type="object"
+                                                    class="btn btn-secondary pull-left"
+                                                    context="{'wiz_barcode_id': parent.id, 'picking_id': picking_id}"
+                                                >Open</button>
+                                            </div>
+                                            <div class="col">
+                                                <button
+                                                    name="action_put_in_pack"
+                                                    type="object"
+                                                    attrs="{'invisible': [('state', 'in', ('draft', 'done', 'cancel'))]}"
+                                                    class="btn btn-primary"
+                                                >Put in pack</button>
+                                            </div>
+                                            <div class="col">
+                                                <!-- FIXME:  Fix confirm question -->
+                                                <button
+                                                    name="action_validate_picking"
+                                                    type="object"
+                                                    t-att-class="'btn pull-right' + (record.is_pending.raw_value == false ? ' btn-primary' : ' btn-secondary')"
+                                                    attrs="{'invisible': [('state', 'not in', 'assigned')]}"
+                                                    confirm="Are you sure to validate the picking ?"
+                                                    context="{'wiz_barcode_id': parent.id, 'picking_id': picking_id}"
+                                                >Validate</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

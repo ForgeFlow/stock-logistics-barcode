@@ -457,6 +457,13 @@ class WizStockBarcodesRead(models.AbstractModel):
     def action_clean_lot(self):
         self.lot_id = False
 
+    def action_clean_package(self):
+        self.package_id = False
+        self.result_package_id = False
+
+    def action_create_package(self):
+        self.result_package_id = self.env["stock.quant.package"].create({})
+
     def action_clean_values(self):
         options = self.option_group_id.option_ids
         options_to_clean = options.filtered("clean_after_done")
