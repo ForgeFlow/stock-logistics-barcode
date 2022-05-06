@@ -64,6 +64,7 @@ class WizStockBarcodesRead(models.AbstractModel):
     step = fields.Integer()
     is_manual_qty = fields.Boolean(compute="_compute_is_manual_qty")
     is_manual_confirm = fields.Boolean(compute="_compute_is_manual_qty")
+    show_scan_log = fields.Boolean(compute="_compute_is_manual_qty")
     # Technical field to allow use in attrs
     display_menu = fields.Boolean()
     qty_available = fields.Float(compute="_compute_qty_available")
@@ -86,6 +87,7 @@ class WizStockBarcodesRead(models.AbstractModel):
             rec.is_manual_qty = rec.option_group_id.is_manual_qty
             rec.is_manual_confirm = rec.option_group_id.is_manual_confirm
             rec.auto_lot = rec.option_group_id.auto_lot
+            rec.show_scan_log = rec.option_group_id.show_scan_log
 
     @api.depends("location_id", "product_id", "lot_id")
     def _compute_qty_available(self):
@@ -508,8 +510,8 @@ class WizStockBarcodesRead(models.AbstractModel):
                 [
                     ("res_model_id", "=", self.res_model_id.id),
                     ("res_id", "=", self.res_id),
-                    ("location_id", "=", self.location_id.id),
-                    ("product_id", "=", self.product_id.id),
+                    # ("location_id", "=", self.location_id.id),
+                    # ("product_id", "=", self.product_id.id),
                 ],
                 limit=10,
             )

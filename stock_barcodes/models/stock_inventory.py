@@ -18,7 +18,6 @@ class StockInventory(models.Model):
             "inventory_id": self.id,
             "res_model_id": self.env.ref("stock.model_stock_inventory").id,
             "res_id": self.id,
-            "product_id": self.product_ids[:1].id,
             "option_group_id": self.env.ref(
                 "stock_barcodes.stock_barcodes_option_group_inventory"
             ).id,

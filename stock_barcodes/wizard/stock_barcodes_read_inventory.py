@@ -17,6 +17,13 @@ class WizStockBarcodesReadInventory(models.TransientModel):
     inventory_product_qty = fields.Float(
         string="Inventory quantities", digits="Product Unit of Measure", readonly=True
     )
+    display_inventory_ids = fields.Many2many(
+        comodel_name="stock.inventory", compute="_compute_display_inventory_ids"
+    )
+
+    def _compute_display_inventory_ids(self):
+        for rec in self:
+            rec.display_inventory_ids = rec.inventory_id.ids
 
     def name_get(self):
         return [
@@ -37,6 +44,7 @@ class WizStockBarcodesReadInventory(models.TransientModel):
             "product_uom_id": self.product_id.uom_id.id,
             "product_qty": self.product_qty,
             "prod_lot_id": self.lot_id.id,
+            "package_id": self.package_id.id,
         }
 
     def _prepare_inventory_line_domain(self, log_scan=False):

@@ -90,6 +90,7 @@
                         <field name="step" invisible="1" force_save="1" />
                         <field name="is_manual_qty" invisible="1" />
                         <field name="is_manual_confirm" invisible="1" />
+                        <field name="show_scan_log" invisible="1" />
                         <field name="auto_lot" invisible="1" />
                         <field name="product_tracking" invisible="1" force_save="1" />
                         <field name="guided_product_id" invisible="1" force_save="1" />
@@ -260,7 +261,7 @@
                             <group
                                 name="scan_log"
                                 string="Current product scanning log"
-                                attrs="{'invisible': [('scan_log_ids', '=', [])]}"
+                                attrs="{'invisible': [('show_scan_log', '=', False)]}"
                             >
                                 <group>
                                     <button
@@ -280,6 +281,7 @@
                                         <field name="create_date" />
                                         <field name="create_uid" />
                                         <field name="name" />
+                                        <field name="location_id" />
                                         <field name="product_id" />
                                         <field name="product_qty" />
                                         <field name="lot_id" />
@@ -292,7 +294,7 @@
                                             <t t-name="kanban-box">
                                                 <div t-attf-class="oe_kanban_card">
                                                     <div class="row">
-                                                        <div class="col-8">
+                                                        <div class="col">
                                                             <strong>
                                                                 <span>
                                                                     <t
@@ -306,7 +308,7 @@
                                                                 </span>
                                                             </strong>
                                                         </div>
-                                                        <div class="col-4">
+                                                        <div class="col">
                                                             <strong>
                                                                 <span
                                                                     class="pull-right text-right"
@@ -318,6 +320,11 @@
                                                             </strong>
                                                         </div>
                                                     </div>
+                                                    <row>
+                                                        <div class="col">
+                                                            <field name="product_id" />
+                                                        </div>
+                                                    </row>
                                                 </div>
                                             </t>
                                         </templates>
