@@ -19,8 +19,8 @@
                                             <field name="name" />
                                         </div>
                                         <div class="col text-right">
-                                            <strong>Accounting Date: </strong>
-                                            <field name="accounting_date" />
+                                            <strong>Date: </strong>
+                                            <field name="date" />
                                         </div>
                                     </div>
                                     <div class="row">
