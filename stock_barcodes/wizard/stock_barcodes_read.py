@@ -1,6 +1,10 @@
 # Copyright 2019 Sergio Teruel <sergio.teruel@tecnativa.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+import logging
+
 from odoo import _, api, fields, models
+
+_logger = logging.getLogger(__name__)
 
 
 class WizStockBarcodesRead(models.AbstractModel):
@@ -430,6 +434,7 @@ class WizStockBarcodesRead(models.AbstractModel):
             self.product_qty = 1.0
         if not self.check_done_conditions():
             return False
+        _logger.info("Add scanned log barcode:{}".format(self.barcode))
         self._add_read_log()
         return True
 
@@ -499,7 +504,7 @@ class WizStockBarcodesRead(models.AbstractModel):
         }
 
     def _add_read_log(self, log_detail=False):
-        if self.product_qty:
+        if self.product_qty and not self.env.context.get("force_create_move", False):
             vals = self._prepare_scan_log_values(log_detail)
             self.env["stock.barcodes.read.log"].create(vals)
 

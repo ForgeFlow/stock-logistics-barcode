@@ -69,7 +69,7 @@
                         name="action_barcode_new_picking"
                         type="object"
                         class="btn btn-secondary"
-                        context="{'default_immediate_transfer': True}"
+                        context="{'default_immediate_transfer': True, 'manual_picking': True}"
                     >
                         <i class="fa fa-plus" />
                         <small>New</small>

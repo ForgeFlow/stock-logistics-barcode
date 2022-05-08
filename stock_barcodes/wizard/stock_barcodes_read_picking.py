@@ -400,6 +400,7 @@ class WizStockBarcodesReadPicking(models.TransientModel):
         if (
             not self.option_group_id.code == "REL"
             and not self.env.context.get("force_create_move", False)
+            and not self.env.context.get("manual_picking", False)
             and available_qty > max_quantity
         ):
             self._set_messagge_info(
@@ -678,7 +679,7 @@ class WizCandidatePicking(models.TransientModel):
                 rec.picking_id.move_line_ids.filtered(
                     lambda ln: ln.barcode_scan_state == "pending"
                 )
-            )
+            ) or rec.picking_id.state == 'draft'
 
     def _get_wizard_barcode_read(self):
         return self.env["wiz.stock.barcodes.read.picking"].browse(
