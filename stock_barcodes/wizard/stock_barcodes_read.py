@@ -645,3 +645,7 @@ class WizStockBarcodesRead(models.AbstractModel):
             self._prepare_lot_values(barcode)
         )
         self.lot_id = new_lot
+
+    def action_clean_message(self):
+        self.message = False
+        self.check_option_required()

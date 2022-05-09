@@ -73,16 +73,14 @@
                             <div
                                 class="alert alert-danger"
                                 role="status"
-                                attrs="{'invisible': [('message_type', '!=', 'more_match')]}"
+                                attrs="{'invisible': [('message_type', '!=', 'more_match'), ('message_type', '!=', 'not_found')]}"
                             >
                                 <field name="message" />
-                            </div>
-                            <div
-                                class="alert alert-danger"
-                                role="status"
-                                attrs="{'invisible': [('message_type', '!=', 'not_found')]}"
-                            >
-                                <field name="message" />
+                                <button
+                                    name="action_clean_message"
+                                    class="fa fa-window-close pull-right"
+                                    type="object"
+                                />
                             </div>
                         </div>
                         <field name="message_type" invisible="1" />
@@ -347,6 +345,9 @@
                         >
                             Edit
                         </label>
+                        <!-- HACK: To avoid inheritance crash -->
+                        <button name="action_manual_entry" invisible="1" />
+                        <!-- // -->
                         <button
                             name="action_clean_values"
                             type="object"
