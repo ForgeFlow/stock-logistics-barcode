@@ -139,7 +139,7 @@
                                         class="d-none d-sm-block"
                                     >Source Package -> Result Package</strong>
                                     <span
-                                        class="fa fa-inbox d-sm-none oe_span_small_icon"
+                                        class="fa fa-cubes d-sm-none oe_span_small_icon"
                                     />
                                     <field
                                         name="package_id"
@@ -222,11 +222,12 @@
                                     />
                                     <button
                                         id="btn_create_lot"
-                                        class="btn btn-secondary ml-2 btn-sm"
+                                        class="btn btn-secondary ml-2 btn-sm oe_kanban_action_button"
                                         type="action"
                                         name="%(action_stock_barcodes_new_lot)d"
                                         icon="fa-plus fa-1x"
                                         context="{'default_product_id': product_id}"
+                                        help="Create new lot"
                                     />
                                 </div>
                             </group>
@@ -355,7 +356,7 @@
                             attrs="{'invisible': [('display_menu', '=', True)]}"
                             accesskey="7"
                         >
-                            <i class="fa fa-recycle" />
+                            <i class="fa fa-trash-o" />
                         </button>
                         <button
                             name="action_confirm"
@@ -377,11 +378,12 @@
                         <button
                             name="open_actions"
                             type="object"
-                            string="Actions"
-                            class="btn-primary ml-auto oe_kanban_action_button btn-sm"
+                            class="ml-auto oe_kanban_action_button btn-sm"
                             attrs="{'invisible': [('display_menu', '=', True)]}"
                             accesskey="0"
-                        />
+                        >
+                            <i class="fa fa-bars" />
+                        </button>
                         <button
                             name="action_back"
                             type="object"
@@ -408,8 +410,8 @@
                         name="packaging_id"
                         options="{'no_open': True, 'no_create': True}"
                         domain="[('product_id', '=', product_id)]"
-                        attrs="{'readonly': [('manual_entry', '=', False)]}"
                         force_save="1"
+                        placeholder="Packaging"
                     />
                 </div>
             </div>

@@ -80,14 +80,6 @@
                                                 >Open</button>
                                             </div>
                                             <div class="col">
-                                                <button
-                                                    name="action_put_in_pack"
-                                                    type="object"
-                                                    attrs="{'invisible': [('state', 'in', ('draft', 'done', 'cancel'))]}"
-                                                    class="btn btn-primary"
-                                                >Put in pack</button>
-                                            </div>
-                                            <div class="col">
                                                 <!-- FIXME:  Fix confirm question -->
                                                 <button
                                                     name="action_validate_picking"
@@ -179,12 +171,17 @@
                                                 </strong>
                                             </div>
                                             <div class="col-2">
-                                                <span class="pull-right text-right">
+                                                <span
+                                                    class="pull-right text-right text-muted"
+                                                >
                                                     <field name="product_uom_qty" />
                                                 </span>
                                             </div>
                                             <div class="col-2">
-                                                <span class="pull-right text-right">
+                                                <span
+                                                    class="pull-right text-right"
+                                                    t-att-class="qty_done >= product_uom_qty ? 'text-success' : ''"
+                                                >
                                                     <field name="qty_done" />
                                                 </span>
                                             </div>
@@ -216,6 +213,20 @@
                     attrs="{'invisible': [('display_assign_serial', '=', False)]}"
                     class="btn btn-secondary btn-sm"
                 />
+            </xpath>
+            <xpath expr="//button[@name='action_clean_values']" position="before">
+                <field name="picking_state" invisible="1" />
+                <button
+                    name="action_put_in_pack"
+                    help="Put in pack"
+                    type="object"
+                    attrs="{'invisible': ['|', ('picking_state', 'in', ('draft', 'done', 'cancel')), ('display_menu', '=', True)]}"
+                    class="ml-auto oe_kanban_action_button btn btn-secondary btn-sm"
+                    groups="stock.group_tracking_lot"
+                    accesskey="6"
+                >
+                     <i class="fa fa-cubes" />
+                </button>
             </xpath>
         </field>
     </record>

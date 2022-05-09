@@ -23,6 +23,7 @@ class WizStockBarcodesReadPicking(models.TransientModel):
     picking_id = fields.Many2one(
         comodel_name="stock.picking", string="Picking", readonly=True
     )
+    picking_state = fields.Selection(related="picking_id.state")
     picking_ids = fields.Many2many(
         comodel_name="stock.picking", string="Pickings", readonly=True
     )
@@ -592,6 +593,9 @@ class WizStockBarcodesReadPicking(models.TransientModel):
         if move:
             return move.action_assign_serial()
         raise ValidationError(_("No pending lines for this product"))
+
+    def action_put_in_pack(self):
+        self.picking_id.put_in_pack()
 
 
 class WizCandidatePicking(models.TransientModel):

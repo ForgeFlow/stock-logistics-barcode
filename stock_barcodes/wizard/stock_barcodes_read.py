@@ -442,11 +442,12 @@ class WizStockBarcodesRead(models.AbstractModel):
         return True
 
     def action_product_scaned_post(self, product):
-        self.packaging_id = False
+        self.package_id = False
         if self.product_id != product:
             self.lot_id = False
         self.product_id = product
         self.product_uom_id = self.product_id.uom_id
+        self.packaging_id = self.product_id.packaging_ids[:1]
         self.product_qty = 0.0 if self.manual_entry or self.is_manual_qty else 1.0
 
     def action_packaging_scaned_post(self, packaging):
@@ -603,6 +604,8 @@ class WizStockBarcodesRead(models.AbstractModel):
         res = self.action_done()
         if res:
             self.action_clean_values()
+            if self.option_group_id.show_pending_moves:
+                self.refresh()
         self.play_sounds(res)
         return res
 
