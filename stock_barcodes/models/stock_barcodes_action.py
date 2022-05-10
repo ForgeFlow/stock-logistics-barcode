@@ -18,6 +18,7 @@ class StockBarcodesAction(models.Model):
     context = fields.Char()
     key_shortcut = fields.Integer()
     key_char_shortcut = fields.Char()
+    icon_class = fields.Char()
 
     def open_action(self):
         action = self.action_window_id.read()[0]

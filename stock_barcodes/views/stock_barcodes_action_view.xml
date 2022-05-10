@@ -27,6 +27,7 @@
                     icon="fa-dollar"
                 />
                 <field name="active" widget="boolean_toggle" />
+                <field name="icon_class" />
             </tree>
         </field>
     </record>

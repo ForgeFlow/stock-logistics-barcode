@@ -29,6 +29,7 @@ class WizStockBarcodesRead(models.AbstractModel):
         comodel_name="stock.location", string="Location dest."
     )
     packaging_id = fields.Many2one(comodel_name="product.packaging")
+    product_packaging_ids = fields.One2many(related="product_id.packaging_ids")
     package_id = fields.Many2one(comodel_name="stock.quant.package")
     result_package_id = fields.Many2one(comodel_name="stock.quant.package")
     owner_id = fields.Many2one(comodel_name="res.partner")

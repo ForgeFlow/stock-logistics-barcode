@@ -150,7 +150,7 @@
                                 name="fill_from_pending_line"
                                 type="object"
                                 class="btn"
-                                icon="fa-upload fa-2x"
+                                icon="fa-upload"
                                 context="{'wiz_barcode_id': parent.id}"
                             />
                         </tree>
