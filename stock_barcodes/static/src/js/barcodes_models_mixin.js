@@ -12,6 +12,7 @@ odoo.define("stock_barcodes.BarcodesModelsMixin", function(require) {
             "stock.picking",
             "stock.picking.type",
             "wiz.candidate.picking",
+            "wiz.stock.barcodes.new.lot",
             "wiz.stock.barcodes.read",
             "wiz.stock.barcodes.read.inventory",
             "wiz.stock.barcodes.read.picking",

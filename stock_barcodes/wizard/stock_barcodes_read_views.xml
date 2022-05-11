@@ -220,7 +220,7 @@
                                         class="h5"
                                     />
                                     <button
-                                        class="btn btn-warning btn-sm pull-right mr4"
+                                        class="btn btn-warning btn-sm pull-right mr4 oe_kanban_action_button"
                                         name="action_clean_lot"
                                         type="object"
                                         icon="fa-trash fa-1x"

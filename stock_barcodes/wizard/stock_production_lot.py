@@ -31,14 +31,21 @@ class WizStockBarcodesNewLot(models.TransientModel):
         )
 
     def scan_wizard_action(self):
-        wiz = self.get_scan_wizard()
-        action = wiz.get_formview_action()
-        action["res_id"] = wiz.id
+        action = self.env.ref(
+            "stock_barcodes.action_stock_barcodes_read_picking"
+        ).read()[0]
+        wiz_id = self.get_scan_wizard()
+        action["res_id"] = wiz_id.id
         return action
 
     def confirm(self):
-        lot = self.env["stock.production.lot"].create(self._prepare_lot_values())
-        # Assign lot created to wizard scanning barcode lot_id field
+        ProductionLot = self.env["stock.production.lot"]
+        lot = ProductionLot.search(
+            [("product_id", "=", self.product_id.id), ("name", "=", self.lot_name)]
+        )
+        if not lot:
+            lot = self.env["stock.production.lot"].create(self._prepare_lot_values())
+        # Assign lot created or found to wizard scanning barcode lot_id field
         wiz = self.get_scan_wizard()
         if wiz:
             wiz.lot_id = lot

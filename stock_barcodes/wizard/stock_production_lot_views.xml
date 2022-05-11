@@ -26,12 +26,12 @@
                             string="Confirm"
                             name="confirm"
                             type="object"
-                            class="btn-primary"
+                            class="btn-primary oe_kanban_action_button"
                         />
                         <button
                             string="Cancel"
                             name="cancel"
-                            class="btn-default"
+                            class="btn-default oe_kanban_action_button"
                             type="object"
                         />
                     </footer>
