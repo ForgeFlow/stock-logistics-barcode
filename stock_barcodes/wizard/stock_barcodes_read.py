@@ -605,8 +605,8 @@ class WizStockBarcodesRead(models.AbstractModel):
         res = self.action_done()
         if res:
             self.action_clean_values()
-            if self.option_group_id.show_pending_moves:
-                self.refresh()
+            # if self.option_group_id.show_pending_moves:
+            #     self.refresh()
         self.play_sounds(res)
         return res
 
