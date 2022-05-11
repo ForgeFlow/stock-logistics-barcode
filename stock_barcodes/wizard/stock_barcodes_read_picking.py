@@ -375,6 +375,14 @@ class WizStockBarcodesReadPicking(models.TransientModel):
             and self.picking_type_code == "incoming"
             and self.product_id.tracking != "none"
         ):
+            if (
+                self.option_group_id.create_lot
+                and self.product_id.tracking == "serial"
+                and candidate_lines.filtered(lambda ln: ln.lot_name == self.lot_id.name)
+            ):
+                self.lot_id = False
+                self._set_messagge_info("more_match", _("S/N already created"))
+                return False
             lines = candidate_lines.filtered(
                 lambda l: (not l.lot_id and l.barcode_scan_state == "pending")
             )

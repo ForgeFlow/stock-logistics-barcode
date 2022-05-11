@@ -587,7 +587,7 @@ class WizStockBarcodesRead(models.AbstractModel):
             self.step = options_required[:1].step
 
         options = self.option_group_id.option_ids.filtered(
-            lambda op: op.step == self.step
+            lambda op: op.step == self.step and op.to_scan
         )
         self._set_messagge_info(
             "info", _("Scan {}").format(", ".join(options.mapped("name")))
@@ -605,8 +605,10 @@ class WizStockBarcodesRead(models.AbstractModel):
         res = self.action_done()
         if res:
             self.action_clean_values()
-            # if self.option_group_id.show_pending_moves:
-            #     self.refresh()
+            if self.option_group_id.show_pending_moves:
+                record = self.browse(self.ids)
+                record.write(self._convert_to_write(self._cache))
+                record.refresh()
         self.play_sounds(res)
         return res
 
