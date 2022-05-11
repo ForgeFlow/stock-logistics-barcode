@@ -15,7 +15,7 @@
                             <field name="code" />
                         </group>
                     </group>
-                    <group>
+                    <group string="Behavior settings">
                         <group>
                             <field name="manual_entry" />
                             <field name="manual_entry_field_focus" />
@@ -39,6 +39,7 @@
                             <field name="create_lot" />
                         </group>
                     </group>
+                    <separator string="Steps to scan" />
                     <field name="option_ids">
                         <tree editable="bottom">
                             <field name="step" />

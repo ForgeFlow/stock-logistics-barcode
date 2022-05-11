@@ -152,7 +152,7 @@
                                         options="{'no_create': True}"
                                         attrs="{'readonly': [('manual_entry', '=', False)]}"
                                         force_save="1"
-                                        style="width:40%"
+                                        style="width:35%"
                                         class="h5"
                                     />
                                     <span
@@ -163,20 +163,20 @@
                                         options="{'no_create': True}"
                                         attrs="{'readonly': [('manual_entry', '=', False)]}"
                                         force_save="1"
-                                        style="width:40%"
+                                        style="width:35%"
                                         class="h5"
                                     />
                                     <button
-                                        class="btn btn-warning btn-sm oe_kanban_action_button"
+                                        class="btn btn-warning btn-sm oe_kanban_action_button pull-right mr4"
                                         name="action_clean_package"
                                         type="object"
-                                        icon="fa-recycle fa-1x"
+                                        icon="fa-trash fa-1x"
                                         attrs="{'invisible': [('package_id', '=', False), ('result_package_id', '=', False)]}"
                                         title="Clean package info"
                                     />
                                     <button
                                         id="btn_create_package"
-                                        class="btn btn-secondary ml-2 btn-sm oe_kanban_action_button"
+                                        class="btn btn-secondary ml2 btn-sm oe_kanban_action_button pull-right mr4"
                                         type="object"
                                         name="action_create_package"
                                         icon="fa-plus fa-1x"
@@ -220,15 +220,15 @@
                                         class="h5"
                                     />
                                     <button
-                                        class="btn btn-warning btn-sm"
+                                        class="btn btn-warning btn-sm pull-right mr4"
                                         name="action_clean_lot"
                                         type="object"
-                                        icon="fa-recycle fa-1x"
+                                        icon="fa-trash fa-1x"
                                         attrs="{'invisible': [('lot_id', '=', False)]}"
                                     />
                                     <button
                                         id="btn_create_lot"
-                                        class="btn btn-secondary ml-2 btn-sm oe_kanban_action_button"
+                                        class="btn btn-secondary ml2 btn-sm oe_kanban_action_button pull-right mr4"
                                         type="action"
                                         name="%(action_stock_barcodes_new_lot)d"
                                         icon="fa-plus fa-1x"

@@ -115,7 +115,7 @@
                                         context="{'wiz_barcode_id': parent.id}"
                                         accesskey="2"
                                     >
-                                        <i class="fa fa-recycle" />
+                                        <i class="fa fa-trash" />
                                     </button>
                                 </div>
                                 <div class="col-3">
