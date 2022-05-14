@@ -202,7 +202,7 @@ class WizStockBarcodesRead(models.AbstractModel):
                     "more_match", _("More than one lot found\nScan product before")
                 )
             elif self.product_id and self.option_group_id.create_lot:
-                self._create_lot(self.barcode)
+                self._create_new_lot(self.barcode)
                 return True
         return False
 
@@ -639,16 +639,16 @@ class WizStockBarcodesRead(models.AbstractModel):
         if self.manual_entry and self.option_group_id.manual_entry_field_focus:
             self._set_focus_on_qty_input(self.option_group_id.manual_entry_field_focus)
 
-    def _prepare_lot_values(self, barcode):
+    def _prepare_lot_vals(self, barcode):
         return {
             "name": barcode,
             "product_id": self.product_id.id,
             "company_id": self.env.company.id,
         }
 
-    def _create_lot(self, barcode):
+    def _create_new_lot(self, barcode):
         new_lot = self.env["stock.production.lot"].create(
-            self._prepare_lot_values(barcode)
+            self._prepare_lot_vals(barcode)
         )
         self.lot_id = new_lot
 
