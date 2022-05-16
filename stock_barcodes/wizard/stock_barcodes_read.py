@@ -213,7 +213,7 @@ class WizStockBarcodesRead(models.AbstractModel):
             ("package_id.name", "=", self.barcode),
             ("quantity", ">", 0.0),
         ]
-        if self.location_id:
+        if self.location_id and self._name != "wiz.stock.barcodes.read.inventory":
             quant_domain.append(("location_id", "=", self.location_id.id))
         else:
             quant_domain.append(("location_id.usage", "=", "internal"))
