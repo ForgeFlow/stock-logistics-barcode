@@ -20,7 +20,7 @@ class TestStockBarcodesInventory(TestStockBarcodes):
         action = self.inventory.action_barcode_scan()
         self.wiz_scan_inventory = self.ScanReadInventory.browse(action["res_id"])
 
-    def _test_inventory_values(self):
+    def test_inventory_values(self):
         self.assertEqual(
             self.wiz_scan_inventory.location_id, self.inventory.location_ids[:1]
         )
@@ -32,16 +32,15 @@ class TestStockBarcodesInventory(TestStockBarcodes):
             "Barcode reader - Test Inventory - ", self.wiz_scan_inventory.display_name,
         )
 
-    def _test_inventory_wizard_scan_product(self):
+    def test_inventory_wizard_scan_product(self):
         self.action_barcode_scanned(self.wiz_scan_inventory, "8480000723208")
-        self.assertEqual(self.wiz_scan_inventory.product_id, self.product_wo_tracking)
         self.assertEqual(len(self.inventory.line_ids), 1.0)
-        self.wiz_scan_inventory.inventory_product_qty = 1.0
         # Scan product with tracking lot enable
         self.action_barcode_scanned(self.wiz_scan_inventory, "8433281006850")
         self.assertEqual(len(self.inventory.line_ids), 1.0)
         self.assertEqual(
-            self.wiz_scan_inventory.message, "8433281006850 (Waiting lot)",
+            self.wiz_scan_inventory.message,
+            "8433281006850 (Scan Packaging, Product, Lot)",
         )
         # Scan a lot. Increment quantities if scan product or other lot from
         # this produt
@@ -51,15 +50,11 @@ class TestStockBarcodesInventory(TestStockBarcodes):
         self.assertEqual(len(self.inventory.line_ids), 2.0)
         self.action_barcode_scanned(self.wiz_scan_inventory, "8411822222568")
         inventory_line_lot = self.inventory.line_ids.filtered("prod_lot_id")
-        self.assertEqual(inventory_line_lot.product_qty, 3.0)
+        self.assertEqual(inventory_line_lot.product_qty, 2.0)
         self.assertEqual(
-            self.wiz_scan_inventory.message, "8411822222568 (OK)",
+            self.wiz_scan_inventory.message,
+            "8411822222568 (Scan Packaging, Product, Lot)",
         )
-        # Scan a package
-        self.action_barcode_scanned(self.wiz_scan_inventory, "5420008510489")
-        # Package of 5 product units. Already three unit exists
-        inventory_line_lot = self.inventory.line_ids.filtered("prod_lot_id")
-        self.assertEqual(inventory_line_lot.product_qty, 8.0)
 
     def _test_inventory_wizard_scan_product_manual_entry(self):
         self.wiz_scan_inventory.manual_entry = True
