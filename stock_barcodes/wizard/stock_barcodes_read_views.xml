@@ -198,6 +198,13 @@
                                         style="width:85%"
                                         class="h5"
                                     />
+                                    <button
+                                        class="btn btn-warning btn-sm pull-right mr4 oe_kanban_action_button"
+                                        name="action_clean_product"
+                                        type="object"
+                                        icon="fa-trash fa-1x"
+                                        attrs="{'invisible': [('product_id', '=', False)]}"
+                                    />
                                 </div>
                             </group>
                             <group
