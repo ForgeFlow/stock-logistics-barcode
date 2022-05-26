@@ -15,9 +15,6 @@ class WizStockBarcodesRead(models.AbstractModel):
     _transient_max_hours = 48
     _allowed_product_types = ["product", "consu"]
 
-    def _default_manual_entry(self):
-        return self.option_group_id.manual_entry
-
     barcode = fields.Char()
     res_model_id = fields.Many2one(comodel_name="ir.model", index=True)
     res_id = fields.Integer(index=True)
@@ -38,9 +35,7 @@ class WizStockBarcodesRead(models.AbstractModel):
     owner_id = fields.Many2one(comodel_name="res.partner")
     packaging_qty = fields.Float(string="Package Qty", digits="Product Unit of Measure")
     product_qty = fields.Float(digits="Product Unit of Measure")
-    manual_entry = fields.Boolean(
-        string="Manual", help="Entry manual data", default="_default_manual_entry"
-    )
+    manual_entry = fields.Boolean(string="Manual", help="Entry manual data")
     confirmed_moves = fields.Boolean(
         string="Confirmed moves", related="option_group_id.confirmed_moves"
     )
@@ -468,13 +463,16 @@ class WizStockBarcodesRead(models.AbstractModel):
 
     def action_clean_lot(self):
         self.lot_id = False
+        self.action_show_step()
 
     def action_clean_product(self):
         self.product_id = False
+        self.action_show_step()
 
     def action_clean_package(self):
         self.package_id = False
         self.result_package_id = False
+        self.action_show_step()
 
     def action_create_package(self):
         self.result_package_id = self.env["stock.quant.package"].create({})

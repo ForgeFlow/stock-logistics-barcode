@@ -21,6 +21,7 @@ class StockInventory(models.Model):
             "option_group_id": self.env.ref(
                 "stock_barcodes.stock_barcodes_option_group_inventory"
             ).id,
+            "manual_entry": option_group.manual_entry,
         }
         if option_group.get_option_value("location_id", "filled_default"):
             vals["location_id"] = self.location_ids[:1].id

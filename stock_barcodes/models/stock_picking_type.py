@@ -16,6 +16,7 @@ class StockPickingType(models.Model):
             "res_id": self.id,
             "picking_type_code": self.code,
             "option_group_id": self.barcode_option_group_id.id,
+            "manual_entry": self.barcode_option_group_id.manual_entry,
             "picking_mode": "picking",
         }
         if self.code == "outgoing":
