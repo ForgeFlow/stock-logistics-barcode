@@ -520,6 +520,7 @@ class WizStockBarcodesReadPicking(models.TransientModel):
             self.picking_type_code != "incoming"
             and self.product_qty > self.qty_available
             and not self.env.context.get("force_create_move", False)
+            and not self.option_group_id.allow_negative_quant
         ):
             self._set_messagge_info(
                 "more_match", _("Quantities not available in location")
