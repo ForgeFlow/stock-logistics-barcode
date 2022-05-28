@@ -65,6 +65,20 @@
                     />
                 </div>
             </group>
+            <label for="manual_entry" position="after">
+                <field
+                    name="auto_lot"
+                    widget="FieldBarcodeBooleanToggle"
+                    accesskey="6"
+                    attrs="{'invisible': [('display_menu', '=', True)]}"
+                />
+                <label
+                    for="auto_lot"
+                    attrs="{'invisible': [('display_menu', '=', True)]}"
+                >
+                    Auto lot
+                </label>
+            </label>
         </field>
     </record>
     <!--

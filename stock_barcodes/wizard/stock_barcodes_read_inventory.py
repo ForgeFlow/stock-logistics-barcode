@@ -87,7 +87,9 @@ class WizStockBarcodesReadInventory(models.TransientModel):
         result = super().action_done()
         if result:
             if self.auto_lot:
-                self._distribute_inventory_lines()
+                res = self._distribute_inventory_lines()
+                if res is not None and not res:
+                    return res
             else:
                 self._add_inventory_line()
         return result

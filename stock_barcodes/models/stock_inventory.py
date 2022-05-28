@@ -14,6 +14,11 @@ class StockInventory(models.Model):
         option_group = self.env.ref(
             "stock_barcodes.stock_barcodes_option_group_inventory"
         )
+        if option_group.auto_lot:
+            # Disable lot_id step required
+            option_group.option_ids.filtered(
+                lambda p: p.field_name == "lot_id"
+            ).required = False
         vals = {
             "inventory_id": self.id,
             "res_model_id": self.env.ref("stock.model_stock_inventory").id,

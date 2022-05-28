@@ -75,7 +75,9 @@ class WizStockBarcodesRead(models.AbstractModel):
         string="Get lots automatically",
         help="If checked the lot will be set automatically with the same "
         "removal startegy",
-        compute="_compute_is_manual_qty",
+        compute="_compute_auto_lot",
+        store=True,
+        readonly=False,
     )
     display_assign_serial = fields.Boolean(compute="_compute_display_assign_serial")
 
@@ -91,6 +93,11 @@ class WizStockBarcodesRead(models.AbstractModel):
             rec.is_manual_confirm = rec.option_group_id.is_manual_confirm
             rec.auto_lot = rec.option_group_id.auto_lot
             rec.show_scan_log = rec.option_group_id.show_scan_log
+
+    @api.depends("option_group_id")
+    def _compute_auto_lot(self):
+        for rec in self:
+            rec.auto_lot = rec.option_group_id.auto_lot
 
     @api.depends("location_id", "product_id", "lot_id")
     def _compute_qty_available(self):
@@ -325,7 +332,7 @@ class WizStockBarcodesRead(models.AbstractModel):
             return False
         if not self.check_option_required():
             return False
-        if self.is_manual_confirm:
+        if self.is_manual_confirm or self.manual_entry:
             self._set_messagge_info("info", _("Review and confirm"))
             return False
         return self.action_confirm()

@@ -14,7 +14,6 @@
         "data/stock_barcodes_action.xml",
         "data/stock_barcodes_option.xml",
         "views/assets.xml",
-        "views/res_config_settings_views.xml",
         "views/stock_barcodes_action_view.xml",
         "views/stock_barcodes_option_view.xml",
         "views/stock_inventory_views.xml",
