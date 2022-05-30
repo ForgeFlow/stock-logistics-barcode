@@ -613,13 +613,13 @@ class WizStockBarcodesRead(models.AbstractModel):
     def action_confirm(self):
         if not self.check_option_required():
             return False
+        record = self.browse(self.ids)
+        record.write(self._convert_to_write(self._cache))
+        self = record
         res = self.action_done()
         if res:
             self.action_clean_values()
-            if self.option_group_id.show_pending_moves:
-                record = self.browse(self.ids)
-                record.write(self._convert_to_write(self._cache))
-                record.refresh()
+        self.refresh()
         self.play_sounds(res)
         return res
 

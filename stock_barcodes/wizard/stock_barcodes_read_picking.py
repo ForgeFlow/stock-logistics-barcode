@@ -433,7 +433,11 @@ class WizStockBarcodesReadPicking(models.TransientModel):
                 }
             )
             # Add or remove result_package_id
-            package_qty_available = sum(self.package_id.quant_ids.mapped("quantity"))
+            package_qty_available = sum(
+                self.package_id.quant_ids.filtered(
+                    lambda q: q.lot_id == self.lot_id
+                ).mapped("quantity")
+            )
             if sml_vals["qty_done"] >= package_qty_available:
                 if not self.result_package_id:
                     sml_vals.update({"result_package_id": self.package_id.id})
