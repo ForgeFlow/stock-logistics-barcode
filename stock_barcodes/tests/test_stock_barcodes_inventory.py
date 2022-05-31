@@ -123,6 +123,12 @@ class TestStockBarcodesInventory(TestStockBarcodes):
         self.wiz_scan_inventory.inventory_id.line_ids.action_reset_product_qty()
         self.action_barcode_scanned(self.wiz_scan_inventory, "8433281006850")
         self.wiz_scan_inventory.product_qty = 150.0
+
+        self.wiz_scan_inventory.auto_lot = True
+        self.wiz_scan_inventory.manual_entry = True
+        self.wiz_scan_inventory.option_group_id.option_ids.filtered(
+            lambda p: p.field_name == "lot_id"
+        ).required = False
         self.wiz_scan_inventory.action_confirm()
         inventory_lines = self.wiz_scan_inventory.inventory_id.line_ids
         line_assigned = inventory_lines.filtered(lambda x: x.prod_lot_id == lot_3)
@@ -137,6 +143,11 @@ class TestStockBarcodesInventory(TestStockBarcodes):
         )
         self.action_barcode_scanned(self.wiz_scan_inventory, "8433281006850")
         self.wiz_scan_inventory.product_qty = 5.0
+        self.wiz_scan_inventory.auto_lot = True
+        self.wiz_scan_inventory.manual_entry = True
+        self.wiz_scan_inventory.option_group_id.option_ids.filtered(
+            lambda p: p.field_name == "lot_id"
+        ).required = False
         self.wiz_scan_inventory.action_confirm()
         inventory_lines = self.wiz_scan_inventory.inventory_id.line_ids
         line_assigned = inventory_lines.filtered(lambda x: x.product_qty > 0.0)
@@ -150,7 +161,15 @@ class TestStockBarcodesInventory(TestStockBarcodes):
         self.wiz_scan_inventory.lot_id = False
         self.action_barcode_scanned(self.wiz_scan_inventory, "8433281006850")
         self.wiz_scan_inventory.product_qty = 5.0
+
+        self.wiz_scan_inventory.auto_lot = True
+        self.wiz_scan_inventory.manual_entry = True
+        self.wiz_scan_inventory.option_group_id.option_ids.filtered(
+            lambda p: p.field_name == "lot_id"
+        ).required = False
+
         self.wiz_scan_inventory.action_confirm()
         self.assertEqual(
-            self.wiz_scan_inventory.message, "8433281006850 (Waiting lot)",
+            self.wiz_scan_inventory.message,
+            "8433281006850 (There is no lots to assign quantities)",
         )

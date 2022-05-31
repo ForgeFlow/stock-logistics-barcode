@@ -347,7 +347,9 @@ class WizStockBarcodesRead(models.AbstractModel):
                     "packaging_qty",
                 ]:
                     self._set_focus_on_qty_input("product_qty")
-                if option.field_name == "lot_id" and self.product_id.tracking == "none":
+                if option.field_name == "lot_id" and (
+                    self.product_id.tracking == "none" or self.auto_lot
+                ):
                     continue
                 self._set_messagge_info("info", option.name)
                 self.action_show_step()
