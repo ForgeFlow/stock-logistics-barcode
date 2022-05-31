@@ -314,22 +314,7 @@ class WizStockBarcodesReadPicking(models.TransientModel):
                 return False
         return True
 
-    def _process_stock_move_line(self):  # noqa: C901
-        """
-        Search assigned or confirmed stock moves from a picking operation type
-        or a picking. If there is more than one picking with demand from
-        scanned product the interface allow to select what picking to work.
-        If only there is one picking the scan data is assigned to it.
-        """
-        StockMove = self.env["stock.move"]
-        domain = self._prepare_stock_moves_domain()
-        if self.option_group_id.barcode_guided_mode == "guided":
-            moves_todo = self.todo_line_id.stock_move_ids
-        else:
-            moves_todo = StockMove.search(domain)
-        if not getattr(self, "_search_candidate_%s" % self.picking_mode,)(moves_todo):
-            return False
-        sml_vals = {}
+    def _get_candidate_stock_move_lines(self, moves_todo, sml_vals):
         candidate_lines = moves_todo.mapped("move_line_ids").filtered(
             lambda l: (
                 # l.picking_id == self.picking_id and
@@ -364,10 +349,39 @@ class WizStockBarcodesReadPicking(models.TransientModel):
                 )
                 if candidate_lines:
                     sml_vals.update({"location_dest_id": self.location_dest_id.id})
+        return candidate_lines
 
+    def _process_stock_move_line(self):  # noqa: C901
+        """
+        Search assigned or confirmed stock moves from a picking operation type
+        or a picking. If there is more than one picking with demand from
+        scanned product the interface allow to select what picking to work.
+        If only there is one picking the scan data is assigned to it.
+        """
+        StockMove = self.env["stock.move"]
+        domain = self._prepare_stock_moves_domain()
+        if self.option_group_id.barcode_guided_mode == "guided":
+            moves_todo = self.todo_line_id.stock_move_ids
+        else:
+            moves_todo = StockMove.search(domain)
+        if not getattr(self, "_search_candidate_%s" % self.picking_mode,)(moves_todo):
+            return False
+        sml_vals = {}
+        candidate_lines = self._get_candidate_stock_move_lines(moves_todo, sml_vals)
         lines = candidate_lines.filtered(
             lambda l: (l.lot_id == self.lot_id and l.barcode_scan_state == "pending")
         )
+        # Check if exists lines with lot created if product has tracking serial
+        if self.product_id.tracking == "serial":
+            serial_lines = self.picking_id.move_line_ids.filtered(
+                lambda sml: (
+                    sml.lot_id == self.lot_id or sml.lot_name == self.lot_id.name
+                )
+                and sml.qty_done >= 1.0
+            )
+            if serial_lines:
+                self._set_messagge_info("more_match", _("S/N Already in picking"))
+                return False
         # For incoming pickings the lot is not filled so we try fill it with
         # the lot scanned
         if (
@@ -479,6 +493,9 @@ class WizStockBarcodesReadPicking(models.TransientModel):
             # link this new lines to the todo line details
             if self.option_group_id.barcode_guided_mode == "guided":
                 self.todo_line_id.line_ids = [(4, sml.id) for sml in stock_move_lines]
+            elif self.option_group_id.show_pending_moves:
+                # TODO: Check performance with a lot records
+                self.fill_todo_records()
         self.update_fields_after_process_stock(moves_todo)
         return move_lines_dic
 

@@ -190,7 +190,7 @@ class WizStockBarcodesRead(models.AbstractModel):
                     if self.owner_id:
                         quant_domain.append(("owner_id", "=", self.owner_id.id))
                     quants = self.env["stock.quant"].search(quant_domain)
-                    if not quants:
+                    if not quants and not self.option_group_id.allow_negative_quant:
                         self._set_messagge_info(
                             "more_match",
                             _("No stock available for this lot with screen values"),
@@ -207,7 +207,8 @@ class WizStockBarcodesRead(models.AbstractModel):
                     "more_match", _("More than one lot found\nScan product before")
                 )
             elif self.product_id and self.option_group_id.create_lot:
-                self._create_new_lot(self.barcode)
+                new_lot = self._create_new_lot(self.barcode)
+                self.action_lot_scaned_post(new_lot)
                 return True
         return False
 
@@ -368,8 +369,11 @@ class WizStockBarcodesRead(models.AbstractModel):
     def _barcode_domain(self, barcode):
         return [("barcode", "=", barcode)]
 
+    def _clean_barcode_scanned(self, barcode):
+        return barcode.rstrip()
+
     def on_barcode_scanned(self, barcode):
-        self.barcode = barcode
+        self.barcode = self._clean_barcode_scanned(barcode)
         self.process_barcode(barcode)
 
     def check_location_contidion(self):
@@ -663,7 +667,7 @@ class WizStockBarcodesRead(models.AbstractModel):
         new_lot = self.env["stock.production.lot"].create(
             self._prepare_lot_vals(barcode)
         )
-        self.lot_id = new_lot
+        return new_lot
 
     def action_clean_message(self):
         self.message = False
