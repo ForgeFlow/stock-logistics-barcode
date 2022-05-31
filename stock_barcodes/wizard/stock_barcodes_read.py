@@ -190,13 +190,20 @@ class WizStockBarcodesRead(models.AbstractModel):
                     if self.owner_id:
                         quant_domain.append(("owner_id", "=", self.owner_id.id))
                     quants = self.env["stock.quant"].search(quant_domain)
-                    if not quants and not self.option_group_id.allow_negative_quant:
+                    if (
+                        not self._name == "wiz.stock.barcodes.read.inventory"
+                        and not quants
+                        and not self.option_group_id.allow_negative_quant
+                    ):
                         self._set_messagge_info(
                             "more_match",
                             _("No stock available for this lot with screen values"),
                         )
                         return False
-                    self.set_info_from_quants(quants)
+                    if quants:
+                        self.set_info_from_quants(quants)
+                    else:
+                        self.action_lot_scaned_post(lot)
                     return True
                 else:
                     self.product_id = lot.product_id
