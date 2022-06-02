@@ -13,12 +13,9 @@ class TestStockBarcodesPicking(TestStockBarcodes):
         self.stock_picking_model = self.env.ref("stock.model_stock_picking")
 
         # Model Data
-        self.barcode_option_group_out = self.env.ref(
-            "stock_barcodes.stock_barcodes_option_group_picking_out"
-        )
-        self.barcode_option_group_in = self.env.ref(
-            "stock_barcodes.stock_barcodes_option_group_picking_in"
-        )
+        self.barcode_option_group_out = self._create_barcode_option_group_outgoing()
+        self.barcode_option_group_in = self._create_barcode_option_group_incoming()
+
         self.barcode_option_group_out.show_scan_log = True
         self.barcode_option_group_in.show_scan_log = True
         self.barcode_option_group_out.barcode_guided_mode = False
@@ -131,12 +128,9 @@ class TestStockBarcodesPicking(TestStockBarcodes):
         action = self.picking_out_01.action_barcode_scan()
         self.wiz_scan_picking_out = self.ScanReadPicking.browse(action["res_id"])
 
-    def _test_wiz_picking_values(self):
-        self.picking_in_01.picking_type_id.barcode_option_group_id = self.env.ref(
-            "stock_barcodes.stock_barcodes_option_group_picking_in"
-        )
+    def test_wiz_picking_values(self):
         self.assertEqual(
-            self.wiz_scan_picking.location_id, self.picking_in_01.location_dest_id
+            self.wiz_scan_picking.location_id, self.picking_in_01.location_id
         )
         self.assertEqual(self.wiz_scan_picking.res_model_id, self.stock_picking_model)
         self.assertEqual(self.wiz_scan_picking.res_id, self.picking_in_01.id)
@@ -145,22 +139,22 @@ class TestStockBarcodesPicking(TestStockBarcodes):
             self.wiz_scan_picking.display_name,
         )
 
-    def _test_picking_wizard_scan_product(self):
+    def test_picking_wizard_scan_product(self):
         wiz_scan_picking = self.wiz_scan_picking.with_context(force_create_move=True)
-        self.action_barcode_scanned(self.wiz_scan_picking, "8480000723208")
-        self.assertEqual(self.wiz_scan_picking.product_id, self.product_wo_tracking)
+        self.action_barcode_scanned(wiz_scan_picking, "8480000723208")
         sml = self.picking_in_01.move_line_ids.filtered(
             lambda x: x.product_id == self.product_wo_tracking
         )
         self.assertEqual(sml.qty_done, 1.0)
         # Scan product with tracking lot enable
-        self.action_barcode_scanned(self.wiz_scan_picking, "8433281006850")
+        self.action_barcode_scanned(wiz_scan_picking, "8433281006850")
         sml = self.picking_in_01.move_line_ids.filtered(
             lambda x: x.product_id == self.product_tracking
         )
         self.assertEqual(sml.qty_done, 0.0)
         self.assertEqual(
-            self.wiz_scan_picking.message, "8433281006850 (Waiting lot)",
+            self.wiz_scan_picking.message,
+            "8433281006850 (Scan Product, Packaging, Lot / Serial)",
         )
         # Scan a lot. Increment quantities if scan product or other lot from
         # this product
@@ -176,42 +170,31 @@ class TestStockBarcodesPicking(TestStockBarcodes):
         self.action_barcode_scanned(wiz_scan_picking, "8411822222568")
         self.assertEqual(sum(stock_move.move_line_ids.mapped("qty_done")), 3.0)
         self.assertEqual(
-            self.wiz_scan_picking.message, "8411822222568 (OK)",
+            self.wiz_scan_picking.message,
+            "8411822222568 (Scan Product, Packaging, Lot / Serial)",
         )
         # Scan a package
         self.action_barcode_scanned(wiz_scan_picking, "5420008510489")
         # Package of 5 product units. Already three unit exists
         self.assertEqual(sum(stock_move.move_line_ids.mapped("qty_done")), 8.0)
 
-    def _test_picking_wizard_scan_product_manual_entry(self):
+    def test_picking_wizard_scan_product_manual_entry(self):
         wiz_scan_picking = self.wiz_scan_picking.with_context(force_create_move=True)
-        self.wiz_scan_picking.manual_entry = True
+        wiz_scan_picking.manual_entry = True
         self.action_barcode_scanned(wiz_scan_picking, "8480000723208")
-        self.assertEqual(wiz_scan_picking.product_id, self.product_wo_tracking)
         sml = self.picking_in_01.move_line_ids.filtered(
             lambda x: x.product_id == self.product_wo_tracking
         )
         self.assertEqual(wiz_scan_picking.product_qty, 0.0)
-        self.wiz_scan_picking.product_qty = 12.0
-        wiz_scan_picking.action_manual_entry()
-        self.assertEqual(sml.qty_done, 8.0)
-        self.assertEqual(sml.move_id.quantity_done, 12.0)
+        wiz_scan_picking.product_qty = 12.0
+        wiz_scan_picking.action_confirm()
+        self.assertEqual(sml.qty_done, 12.0)
 
-    def _test_picking_wizard_remove_last_scan(self):
-        self.action_barcode_scanned(self.wiz_scan_picking, "8480000723208")
-        self.assertEqual(self.wiz_scan_picking.product_id, self.product_wo_tracking)
-        sml = self.picking_in_01.move_line_ids.filtered(
-            lambda x: x.product_id == self.product_wo_tracking
-        )
-        self.assertEqual(sml.qty_done, 1.0)
-        self.wiz_scan_picking.action_undo_last_scan()
-        self.assertEqual(sml.qty_done, 0.0)
-        self.assertEqual(self.wiz_scan_picking.picking_product_qty, 0.0)
-
-    def _test_barcode_from_operation(self):
+    def test_barcode_from_operation(self):
         picking_out_3 = self.picking_out_01.copy()
         self.picking_out_01.action_assign()
         self.picking_out_02.action_assign()
+        self.picking_type_out.default_location_dest_id = self.customer_location
 
         action = self.picking_type_out.action_barcode_scan()
         self.wiz_scan_picking = self.ScanReadPicking.browse(action["res_id"])
@@ -220,7 +203,7 @@ class TestStockBarcodesPicking(TestStockBarcodes):
         self.wiz_scan_picking.lot_id = self.lot_1
         self.wiz_scan_picking.product_qty = 2
 
-        self.wiz_scan_picking.with_context(force_create_move=True).action_manual_entry()
+        self.wiz_scan_picking.with_context(force_create_move=True).action_confirm()
         self.assertEqual(len(self.wiz_scan_picking.candidate_picking_ids), 2)
         # Lock first picking
         candidate = self.wiz_scan_picking.candidate_picking_ids.filtered(
@@ -231,21 +214,24 @@ class TestStockBarcodesPicking(TestStockBarcodes):
         )
         candidate_wiz.with_context(force_create_move=True).action_lock_picking()
         self.assertEqual(self.picking_out_01.move_lines.quantity_done, 2)
-        self.wiz_scan_picking.with_context(force_create_move=True).action_manual_entry()
+        self.wiz_scan_picking.product_qty = 2
+        self.wiz_scan_picking.with_context(force_create_move=True).action_confirm()
         self.assertEqual(self.picking_out_01.move_lines.quantity_done, 4)
 
         # Picking out 3 is in confirmed state, so until confirmed moves has
         # not been activated candidate pickings is 2
         picking_out_3.action_confirm()
         candidate_wiz.action_unlock_picking()
-        self.wiz_scan_picking.with_context(force_create_move=True).action_manual_entry()
+        self.wiz_scan_picking.product_qty = 2
+        self.wiz_scan_picking.with_context(force_create_move=True).action_confirm()
         self.assertEqual(len(self.wiz_scan_picking.candidate_picking_ids), 2)
-        self.wiz_scan_picking.confirmed_moves = True
         candidate_wiz.action_unlock_picking()
-        self.wiz_scan_picking.with_context(force_create_move=True).action_manual_entry()
+        self.wiz_scan_picking.product_qty = 2
+        self.wiz_scan_picking.option_group_id.confirmed_moves = True
+        self.wiz_scan_picking.with_context(force_create_move=True).action_confirm()
         self.assertEqual(len(self.wiz_scan_picking.candidate_picking_ids), 3)
 
-    def _test_picking_wizard_scan_product_auto_lot(self):
+    def test_picking_wizard_scan_product_auto_lot(self):
         # Prepare more data
         lot_2 = self.StockProductionLot.create(
             {
@@ -283,7 +269,8 @@ class TestStockBarcodesPicking(TestStockBarcodes):
         # Scan product with tracking lot enable
         self.action_barcode_scanned(self.wiz_scan_picking, "8433281006850")
         self.assertEqual(
-            self.wiz_scan_picking.message, "8433281006850 (Waiting lot)",
+            self.wiz_scan_picking.message,
+            "8433281006850 (Scan Product, Packaging, Lot / Serial)",
         )
 
         self.wiz_scan_picking.auto_lot = True
@@ -296,7 +283,7 @@ class TestStockBarcodesPicking(TestStockBarcodes):
         self.assertFalse(self.wiz_scan_picking.lot_id)
 
         # Continue test with a outgoing wizard
-        self.wiz_scan_picking_out.auto_lot = True
+        self.wiz_scan_picking_out.option_group_id.auto_lot = True
         self.action_barcode_scanned(self.wiz_scan_picking_out, "8433281006850")
         self.assertEqual(self.wiz_scan_picking_out.lot_id, self.lot_1)
 
@@ -307,3 +294,158 @@ class TestStockBarcodesPicking(TestStockBarcodes):
         )
         self.action_barcode_scanned(self.wiz_scan_picking_out, "8433281006850")
         self.assertEqual(self.wiz_scan_picking_out.lot_id, lot_3)
+
+    def _create_barcode_option_group_incoming(self):
+        return self.env["stock.barcodes.option.group"].create(
+            {
+                "name": "option group incoming for tests",
+                "option_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "step": 1,
+                            "name": "Location",
+                            "field_name": "location_id",
+                            "filled_default": True,
+                            "to_scan": False,
+                            "required": True,
+                        },
+                    ),
+                    (
+                        0,
+                        0,
+                        {
+                            "step": 2,
+                            "name": "Product",
+                            "field_name": "product_id",
+                            "to_scan": True,
+                            "required": True,
+                            "clean_after_done": True,
+                        },
+                    ),
+                    (
+                        0,
+                        0,
+                        {
+                            "step": 2,
+                            "name": "Packaging",
+                            "field_name": "packaging_id",
+                            "to_scan": True,
+                            "required": False,
+                        },
+                    ),
+                    (
+                        0,
+                        0,
+                        {
+                            "step": 2,
+                            "name": "Lot / Serial",
+                            "field_name": "lot_id",
+                            "to_scan": True,
+                            "required": True,
+                        },
+                    ),
+                    (
+                        0,
+                        0,
+                        {
+                            "step": 3,
+                            "name": "Location Dest",
+                            "field_name": "location_dest_id",
+                            "filled_default": True,
+                            "to_scan": False,
+                            "required": True,
+                        },
+                    ),
+                    (
+                        0,
+                        0,
+                        {
+                            "step": 4,
+                            "name": "Quantity",
+                            "field_name": "product_qty",
+                            "required": True,
+                            "clean_after_done": True,
+                        },
+                    ),
+                ],
+            }
+        )
+
+    def _create_barcode_option_group_outgoing(self):
+        return self.env["stock.barcodes.option.group"].create(
+            {
+                "name": "option group outgoing for tests",
+                "option_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "step": 1,
+                            "name": "Location",
+                            "field_name": "location_id",
+                            "to_scan": True,
+                            "required": True,
+                            "filled_default": True,
+                        },
+                    ),
+                    (
+                        0,
+                        0,
+                        {
+                            "step": 2,
+                            "name": "Product",
+                            "field_name": "product_id",
+                            "to_scan": True,
+                            "required": True,
+                        },
+                    ),
+                    (
+                        0,
+                        0,
+                        {
+                            "step": 2,
+                            "name": "Packaging",
+                            "field_name": "packaging_id",
+                            "to_scan": True,
+                            "required": False,
+                        },
+                    ),
+                    (
+                        0,
+                        0,
+                        {
+                            "step": 2,
+                            "name": "Lot / Serial",
+                            "field_name": "lot_id",
+                            "to_scan": True,
+                            "required": True,
+                        },
+                    ),
+                    (
+                        0,
+                        0,
+                        {
+                            "step": 3,
+                            "name": "Location Dest",
+                            "field_name": "location_dest_id",
+                            "filled_default": True,
+                            "to_scan": False,
+                            "required": True,
+                        },
+                    ),
+                    (
+                        0,
+                        0,
+                        {
+                            "step": 4,
+                            "name": "Quantity",
+                            "field_name": "product_qty",
+                            "required": True,
+                            "clean_after_done": True,
+                        },
+                    ),
+                ],
+            }
+        )
