@@ -203,6 +203,7 @@ class WizStockBarcodesRead(models.AbstractModel):
                     if quants:
                         self.set_info_from_quants(quants)
                     else:
+                        self.product_id = lot.product_id
                         self.action_lot_scaned_post(lot)
                     return True
                 else:
