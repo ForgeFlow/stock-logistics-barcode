@@ -194,7 +194,13 @@ class WizStockBarcodesReadTodo(models.TransientModel):
 
     @api.model
     def fields_to_fill_from_pending_line(self):
-        return ["product_id", "lot_id", "package_id", "result_package_id"]
+        return [
+            "location_id",
+            "product_id",
+            "lot_id",
+            "package_id",
+            "result_package_id",
+        ]
 
     def fill_from_pending_line(self):
         self.wiz_barcode_id.determine_todo_action(forced_todo_line=self)
