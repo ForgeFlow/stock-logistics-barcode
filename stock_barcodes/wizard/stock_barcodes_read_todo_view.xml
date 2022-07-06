@@ -18,6 +18,7 @@
                 <field name="package_product_qty" />
                 <field name="product_uom_qty" />
                 <field name="qty_done" />
+                <field name="line_ids" invisible="1"/>
                 <field name="state" />
                 <templates>
                     <t t-name="kanban-box">
@@ -126,7 +127,7 @@
                                         context="{'wiz_barcode_id': parent.id}"
                                         accesskey="3"
                                     >
-                                    Force
+                                    Done
                                     </button>
                                 </div>
                                 <div class="col-3">
