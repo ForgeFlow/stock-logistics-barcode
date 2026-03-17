@@ -417,6 +417,8 @@ class WizStockBarcodesRead(models.AbstractModel):
 
     def process_barcode(self, barcode):
         if not self:
+            # Called from the main menu with an empty recordset.
+            # 1. Try to match a barcode action
             barcode_action = self.env["stock.barcodes.action"].search(
                 domain=Domain.AND(
                     [
@@ -426,16 +428,45 @@ class WizStockBarcodesRead(models.AbstractModel):
                 ),
                 limit=1,
             )
+            if barcode_action:
+                self.env["bus.bus"]._sendone(
+                    "stock_barcodes_main_menu",
+                    "actions_main_menu_barcode",
+                    {
+                        "action_ok": True,
+                        "action": barcode_action.open_action(),
+                        "barcode": barcode,
+                    },
+                )
+                return
 
+            # 2. Try to match a picking by name
+            picking = self.env["stock.picking"].search(
+                Domain("name", "=", barcode), limit=1
+            )
+            if picking and picking.state in ("assigned", "confirmed", "waiting"):
+                self.env["bus.bus"]._sendone(
+                    "stock_barcodes_main_menu",
+                    "actions_main_menu_barcode",
+                    {
+                        "action_ok": True,
+                        "action": picking.action_barcode_scan(),
+                        "barcode": barcode,
+                    },
+                )
+                return
+
+            # 3. Nothing found
             self.env["bus.bus"]._sendone(
-                "stock_barcodes_scan",
+                "stock_barcodes_main_menu",
                 "actions_main_menu_barcode",
                 {
-                    "action_ok": len(barcode_action) > 0,
-                    "action": barcode_action.open_action() if barcode_action else "",
+                    "action_ok": False,
+                    "action": "",
                     "barcode": barcode,
                 },
             )
+            return
         else:
             self._set_messagge_info("success", self.env._("OK"))
             options = self.option_group_id.option_ids

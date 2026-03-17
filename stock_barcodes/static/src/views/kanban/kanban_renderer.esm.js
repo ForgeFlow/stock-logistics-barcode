@@ -35,7 +35,7 @@ patch(KanbanRenderer.prototype, {
                 }
                 return;
             },
-            {area: () => rootRef.el}
+            {area: () => (rootRef.el?.isConnected ? rootRef.el : null)}
         );
 
         super.setup(...arguments);

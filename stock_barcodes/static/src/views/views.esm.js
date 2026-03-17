@@ -109,11 +109,8 @@ function setupView() {
             this.model.root.resModel === payload.res_model &&
             this.model.root.resId === payload.res_id
         ) {
-            if (payload.sound === "ko") {
-                this.sound_ko.play();
-            } else {
-                this.sound_ok.play();
-            }
+            const audio = payload.sound === "ko" ? this.sound_ko : this.sound_ok;
+            audio.play().catch(() => {});
         }
     };
 
@@ -128,6 +125,7 @@ function setupView() {
                 );
                 if (input) {
                     input.focus();
+                    input.select();
                 }
             });
         }

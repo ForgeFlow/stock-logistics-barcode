@@ -71,7 +71,9 @@ class WizStockBarcodesReadPicking(models.TransientModel):
         comodel_name="wiz.stock.barcodes.read.todo"
     )
     show_detailed_operations = fields.Boolean(
-        related="option_group_id.show_detailed_operations", store=True
+        compute="_compute_show_detailed_operations",
+        store=True,
+        readonly=False,
     )
     keep_screen_values = fields.Boolean(related="option_group_id.keep_screen_values")
     # Extended from stock_barcodes_read base model
@@ -86,6 +88,11 @@ class WizStockBarcodesReadPicking(models.TransientModel):
     qty_available = fields.Float(compute="_compute_qty_available")
     partner_id = fields.Many2one("res.partner", related="picking_id.partner_id")
     enable_add_product = fields.Boolean(compute="_compute_enable_add_product")
+
+    @api.depends("option_group_id.show_detailed_operations")
+    def _compute_show_detailed_operations(self):
+        for rec in self:
+            rec.show_detailed_operations = rec.option_group_id.show_detailed_operations
 
     def action_show_detailed_operations(self):
         self.show_detailed_operations = not self.show_detailed_operations
@@ -896,11 +903,9 @@ class WizStockBarcodesReadPicking(models.TransientModel):
                     ).location_dest_id.id,
                     "uom_id": line.product_uom.id,
                     "product_uom_qty": line.product_uom_qty,
-                    "qty_done": (
-                        line.move_line_ids
-                        and sum(line.move_line_ids.mapped("quantity"))
-                    )
-                    or line.product_uom_qty,
+                    "qty_done": sum(line.move_line_ids.mapped("quantity"))
+                    if line.move_line_ids
+                    else line.quantity,
                     "line_ids": [(6, 0, line.move_line_ids.ids)],
                     "stock_move_ids": [(6, 0, line.ids)],
                     "is_stock_move_line_origin": False,
@@ -917,9 +922,9 @@ class WizStockBarcodesReadPicking(models.TransientModel):
         else:
             vals["product_uom_qty"] += line.product_uom_qty
             vals["qty_done"] += (
-                line.move_line_ids
-                and sum(line.move_line_ids.mapped("quantity"))
-                or line.product_uom_qty
+                sum(line.move_line_ids.mapped("quantity"))
+                if line.move_line_ids
+                else line.quantity
             )
             vals["line_ids"][0][2].extend(line.move_line_ids.ids)
             vals["stock_move_ids"][0][2].extend(line.ids)

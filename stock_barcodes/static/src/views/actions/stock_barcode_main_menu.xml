@@ -3,6 +3,7 @@
 
     <div
         t-name="stock_barcodes.MainMenu"
+        t-ref="root"
         class="d-flex flex-column stock-barcodes-main-menu align-items-center p-4"
     >
         <div

@@ -4,34 +4,46 @@ import {useService} from "@web/core/utils/hooks";
 const {useEffect} = owl;
 
 patch(BarcodeHandlerField.prototype, {
-    /* eslint-disable no-unused-vars */
     setup() {
         super.setup(...arguments);
         const busService = useService("bus_service");
         this.orm = useService("orm");
-        const handleStockBarcodesRefreshData = async (payload) => {
-            await this.env.model.root.load();
-            this.env.model.notify();
+        const handleStockBarcodesRefreshData = async () => {
+            const model = this.env?.model || this.props?.record?.model;
+            const rootModel = model?.root || this.env?.model?.root;
+            if (rootModel?.load) {
+                await rootModel.load();
+            }
+            if (model?.notify) {
+                model.notify();
+            }
         };
-        useEffect(() => {
-            busService.addChannel("barcode_reload");
-            busService.subscribe(
-                "stock_barcodes_refresh_data",
-                handleStockBarcodesRefreshData
-            );
-            return () => {
-                busService.unsubscribe(
+        useEffect(
+            () => {
+                busService.addChannel("barcode_reload");
+                busService.subscribe(
                     "stock_barcodes_refresh_data",
                     handleStockBarcodesRefreshData
                 );
-                busService.deleteChannel("barcode_reload");
-            };
-        });
+                return () => {
+                    busService.unsubscribe(
+                        "stock_barcodes_refresh_data",
+                        handleStockBarcodesRefreshData
+                    );
+                    busService.deleteChannel("barcode_reload");
+                };
+            },
+            () => []
+        );
     },
     onBarcodeScanned(event) {
         super.onBarcodeScanned(...arguments);
-        if (this.props.record.resModel.includes("wiz.stock.barcodes.read")) {
-            document.getElementById("dummy_on_barcode_scanned")?.click();
+        const resModel = this.props?.record?.resModel || "";
+        if (resModel.includes("wiz.stock.barcodes.read")) {
+            const btn = document.getElementById("dummy_on_barcode_scanned");
+            if (btn instanceof HTMLElement) {
+                btn.click();
+            }
         }
     },
 });
